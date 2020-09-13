@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "./login.css";
 import Cookies from "universal-cookie";
-import Post from "./post";
+import { Redirect } from "react-router-dom";
 
 const Login = () => {
-  const [loggedin, SetLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const submit = (e) => {
     e.preventDefault();
@@ -13,7 +13,7 @@ const Login = () => {
       password: e.target.password.value,
     };
 
-    fetch("http://localhost:3000/login/", {
+    fetch("https://audiosharebackend.herokuapp.com/login/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -23,9 +23,9 @@ const Login = () => {
       .then((response) => response.json())
       .then((data) => {
         const cookies = new Cookies();
-
         cookies.set("token", data, { path: "/" });
         console.log("Success:", data);
+        setLoggedIn(true);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -34,6 +34,7 @@ const Login = () => {
 
   return (
     <div>
+      {loggedIn && <Redirect to="/post" />}
       <div className="main">
         <p className="sign" align="center">
           Sign in
@@ -61,7 +62,7 @@ const Login = () => {
           <a href="#"></a> */}
         </form>
       </div>
-      {/* <a href="#"></a> */}
+      {/* <a href="#"></a> */};
     </div>
   );
 };

@@ -54,8 +54,8 @@ const Post = () => {
       body: formdata,
     };
 
-    fetch("http://localhost:3000/audiopost/", requestOptions)
-      .then((response) => response.text())
+    fetch("https://audiosharebackend.herokuapp.com/audiopost/", requestOptions)
+      .then((response) => response.json())
       .then((result) => console.log(result))
       .catch((error) => console.log("error", error));
   };
