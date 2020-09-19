@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { useVoiceRecorder } from "use-voice-recorder";
 import Cookies from "universal-cookie";
