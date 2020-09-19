@@ -69,7 +69,7 @@ const Post = () => {
       .catch((error) => console.log("error", error));
   };
 
-  return lat && lon ? (
+  return (
     <div>
       <div>
         <h1>Voices:</h1>
@@ -110,8 +110,6 @@ const Post = () => {
         </Map>
       )}
     </div>
-  ) : (
-    "loading gps coordinates"
   );
 };
 
