@@ -22,13 +22,6 @@ const Post = () => {
     enableHighAccuracy: true,
   });
 
-  useEffect(() => {
-    setLat(latitude);
-    setLon(longitude);
-    console.log("Latitude is :", latitude);
-    console.log("Longitude is :", longitude);
-  }, [latitude, longitude]);
-
   const [blobURL, setBlobUrl] = useState(null);
   const [blob, setBlob] = useState(null);
   const { isRecording, stop, start } = useVoiceRecorder((data) => {
@@ -38,6 +31,13 @@ const Post = () => {
   const [lat, setLat] = useState(null);
   const [lon, setLon] = useState(null);
   const [servCoords, setServCoords] = useState(null);
+
+  useEffect(() => {
+    setLat(latitude);
+    setLon(longitude);
+    console.log("Latitude is :", latitude);
+    console.log("Longitude is :", longitude);
+  }, [latitude, longitude]);
 
   const postPost = (result) => {
     console.log(result.location.coordinates);
