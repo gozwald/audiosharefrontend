@@ -64,7 +64,7 @@ const Post = () => {
     <div>
       <ReactMic
         record={record}
-        className="sound-wave"
+        // className="sound-wave"
         onStop={onStop}
         onData={onData}
         strokeColor="#000000"
@@ -80,6 +80,12 @@ const Post = () => {
         <button onClick={post} type="button">
           Post
         </button>
+      )}
+      {audioblob && (
+        <audio controls>
+          <source src={audioblob.blobURL} type="audio/webm" />
+          Your browser does not support the audio tag.
+        </audio>
       )}
     </div>
   );
