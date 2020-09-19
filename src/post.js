@@ -7,7 +7,6 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
-import { usePosition } from "use-position";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -17,9 +16,13 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const Post = () => {
-  const watch = true;
-  const { latitude, longitude } = usePosition(watch, {
-    enableHighAccuracy: true,
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setLat(position.coords.latitude);
+      setLon(position.coords.longitude);
+      console.log("Latitude is :", position.coords.latitude);
+      console.log("Longitude is :", position.coords.longitude);
+    });
   });
 
   const [blobURL, setBlobUrl] = useState(null);
@@ -31,13 +34,6 @@ const Post = () => {
   const [lat, setLat] = useState(null);
   const [lon, setLon] = useState(null);
   const [servCoords, setServCoords] = useState(null);
-
-  useEffect(() => {
-    setLat(latitude);
-    setLon(longitude);
-    console.log("Latitude is :", latitude);
-    console.log("Longitude is :", longitude);
-  }, [latitude, longitude]);
 
   const postPost = (result) => {
     console.log(result.location.coordinates);
@@ -69,7 +65,7 @@ const Post = () => {
       .catch((error) => console.log("error", error));
   };
 
-  return (
+  return lat && lon ? (
     <div>
       <div>
         <h1>Voices:</h1>
@@ -83,9 +79,9 @@ const Post = () => {
           {blob && (
             <div>
               <audio
-                src={URL.createObjectURL(blob)}
+                src={window.URL.createObjectURL(blob)}
                 controls
-                preload={"auto"}
+                preload={"metadata"}
               />
             </div>
           )}
@@ -110,6 +106,8 @@ const Post = () => {
         </Map>
       )}
     </div>
+  ) : (
+    "loading gps coordinates"
   );
 };
 
