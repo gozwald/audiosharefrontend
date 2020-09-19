@@ -17,15 +17,8 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const Post = () => {
-  const { latitude, longitude } = usePosition();
-  // useEffect(() => {
-  //   navigator.geolocation.getCurrentPosition((position) => {
-  //     setLat(position.coords.latitude);
-  //     setLon(position.coords.longitude);
-  //     console.log("Latitude is :", position.coords.latitude);
-  //     console.log("Longitude is :", position.coords.longitude);
-  //   });
-  // }, []);
+  const watch = true;
+  const { latitude, longitude } = usePosition(watch);
 
   const [blobURL, setBlobUrl] = useState(null);
   const [blob, setBlob] = useState(null);
@@ -33,8 +26,6 @@ const Post = () => {
     setBlob(data);
   });
 
-  // const [lat, setLat] = useState(null);
-  // const [lon, setLon] = useState(null);
   const [servCoords, setServCoords] = useState(null);
 
   const postPost = (result) => {
@@ -109,7 +100,7 @@ const Post = () => {
       )}
     </div>
   ) : (
-    "loading gps coordinates"
+    "Site requires GPS to proceed, or loading gps coordinates"
   );
 };
 
