@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-// import { ReactMic } from "react-mic";
 import { useVoiceRecorder } from "use-voice-recorder";
 import Cookies from "universal-cookie";
 
@@ -14,6 +13,7 @@ const Post = () => {
     });
   }, []);
 
+  const [blobURL, setBlobUrl] = useState(null);
   const [blob, setBlob] = useState(null);
   const { isRecording, stop, start } = useVoiceRecorder((data) => {
     setBlob(data);
@@ -42,7 +42,7 @@ const Post = () => {
 
     fetch("https://audiosharebackend.herokuapp.com/audiopost/", requestOptions)
       .then((response) => response.json())
-      .then((result) => console.log(result))
+      .then((result) => setBlobUrl(result.url))
       .catch((error) => console.log("error", error));
   };
 
@@ -56,7 +56,7 @@ const Post = () => {
           <button onClick={stop}>Stop</button>
         </div>
         <div>
-          <h1>Blob:</h1>
+          <h1>Local Blob:</h1>
           {blob && (
             <div>
               <audio
@@ -73,6 +73,12 @@ const Post = () => {
           </button>
         )}
       </div>
+      <h1>Public Blob from DB:</h1>
+      {blobURL && (
+        <div>
+          <audio src={blobURL} controls preload={"metadata"} />
+        </div>
+      )}
     </div>
   );
 };
