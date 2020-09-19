@@ -7,6 +7,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
+import { usePosition } from "use-position";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -16,14 +17,15 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const Post = () => {
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setLat(position.coords.latitude);
-      setLon(position.coords.longitude);
-      console.log("Latitude is :", position.coords.latitude);
-      console.log("Longitude is :", position.coords.longitude);
-    });
-  });
+  const { latitude, longitude } = usePosition();
+  // useEffect(() => {
+  //   navigator.geolocation.getCurrentPosition((position) => {
+  //     setLat(position.coords.latitude);
+  //     setLon(position.coords.longitude);
+  //     console.log("Latitude is :", position.coords.latitude);
+  //     console.log("Longitude is :", position.coords.longitude);
+  //   });
+  // }, []);
 
   const [blobURL, setBlobUrl] = useState(null);
   const [blob, setBlob] = useState(null);
@@ -31,8 +33,8 @@ const Post = () => {
     setBlob(data);
   });
 
-  const [lat, setLat] = useState(null);
-  const [lon, setLon] = useState(null);
+  // const [lat, setLat] = useState(null);
+  // const [lon, setLon] = useState(null);
   const [servCoords, setServCoords] = useState(null);
 
   const postPost = (result) => {
@@ -44,7 +46,7 @@ const Post = () => {
   const post = () => {
     const location = JSON.stringify({
       type: "Point",
-      coordinates: [lat, lon],
+      coordinates: [latitude, longitude],
     });
 
     const cookies = new Cookies();
@@ -65,7 +67,7 @@ const Post = () => {
       .catch((error) => console.log("error", error));
   };
 
-  return lat && lon ? (
+  return latitude && longitude ? (
     <div>
       <div>
         <h1>Voices:</h1>
