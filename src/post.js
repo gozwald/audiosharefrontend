@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { ReactMic } from "react-mic";
+// import { ReactMic } from "react-mic";
 import { useVoiceRecorder } from "use-voice-recorder";
 import Cookies from "universal-cookie";
 
@@ -14,33 +14,13 @@ const Post = () => {
     });
   }, []);
 
-  const [records, updateRecords] = useState([]);
+  const [blob, setBlob] = useState(null);
   const { isRecording, stop, start } = useVoiceRecorder((data) => {
-    updateRecords([...records, window.URL.createObjectURL(data)]);
+    setBlob(data);
   });
 
-  const [record, setrecord] = useState(false);
-  const [canPost, setcanPost] = useState(false);
-  const [audioblob, setAudioBlob] = useState(null);
   const [lat, setLat] = useState(null);
   const [lon, setLon] = useState(null);
-
-  const startRecording = () => {
-    setrecord(true);
-  };
-
-  const stopRecording = () => {
-    setrecord(false);
-  };
-
-  const onData = (recordedBlob) => {
-    console.log("chunk of real-time data is: ", recordedBlob);
-  };
-
-  const onStop = (recordedBlob) => {
-    setcanPost(true);
-    setAudioBlob(recordedBlob);
-  };
 
   const post = () => {
     const location = JSON.stringify({
@@ -51,7 +31,7 @@ const Post = () => {
     const cookies = new Cookies();
 
     var formdata = new FormData();
-    formdata.append("audio", audioblob.blob);
+    formdata.append("audio", blob);
     formdata.append("location", location);
     formdata.append("token", cookies.get("token"));
 
@@ -76,39 +56,23 @@ const Post = () => {
           <button onClick={stop}>Stop</button>
         </div>
         <div>
-          <h1>Records:</h1>
-          {records.map((data, idx) => (
-            <div key={idx}>
-              <audio src={data} controls preload={"metadata"} />
+          <h1>Blob:</h1>
+          {blob && (
+            <div>
+              <audio
+                src={window.URL.createObjectURL(blob)}
+                controls
+                preload={"metadata"}
+              />
             </div>
-          ))}
+          )}
         </div>
+        {blob && (
+          <button onClick={post} type="button">
+            Post
+          </button>
+        )}
       </div>
-      <ReactMic
-        record={record}
-        // className="sound-wave"
-        onStop={onStop}
-        onData={onData}
-        strokeColor="#000000"
-        backgroundColor="#FF4081"
-      />
-      <button onClick={startRecording} type="button">
-        Start
-      </button>
-      <button onClick={stopRecording} type="button">
-        Stop
-      </button>
-      {canPost && (
-        <button onClick={post} type="button">
-          Post
-        </button>
-      )}
-      {audioblob && (
-        <audio controls>
-          <source src={audioblob.blobURL} type="audio/webm" />
-          Your browser does not support the audio tag.
-        </audio>
-      )}
     </div>
   );
 };
