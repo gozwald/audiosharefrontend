@@ -92,21 +92,15 @@ const Post = () => {
           </button>
         )}
       </div>
-      <h1>Public Blob from DB:</h1>
-      {blobURL && (
-        <div>
-          <audio src={blobURL} controls preload={"metadata"} />
-        </div>
-      )}
-      {servCoords && (
-        <Map center={servCoords} zoom={20}>
+      {servCoords && blobURL && (
+        <Map center={servCoords} zoom={15}>
           <TileLayer
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <Marker position={servCoords}>
             <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
+              <audio src={blobURL} controls preload={"metadata"} />
             </Popup>
           </Marker>
         </Map>
