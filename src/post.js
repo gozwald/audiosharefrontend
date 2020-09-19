@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import { ReactMic } from "react-mic";
+import { useVoiceRecorder } from "use-voice-recorder";
 import Cookies from "universal-cookie";
 
 const Post = () => {
@@ -12,6 +13,11 @@ const Post = () => {
       console.log("Longitude is :", position.coords.longitude);
     });
   }, []);
+
+  const [records, updateRecords] = useState([]);
+  const { isRecording, stop, start } = useVoiceRecorder((data) => {
+    updateRecords([...records, window.URL.createObjectURL(data)]);
+  });
 
   const [record, setrecord] = useState(false);
   const [canPost, setcanPost] = useState(false);
@@ -62,6 +68,22 @@ const Post = () => {
 
   return (
     <div>
+      <div>
+        <h1>Voices:</h1>
+        <div>
+          <h3>On air: {isRecording ? "on" : "off"}</h3>
+          <button onClick={start}>Start</button>
+          <button onClick={stop}>Stop</button>
+        </div>
+        <div>
+          <h1>Records:</h1>
+          {records.map((data, idx) => (
+            <div key={idx}>
+              <audio src={data} controls preload={"metadata"} />
+            </div>
+          ))}
+        </div>
+      </div>
       <ReactMic
         record={record}
         // className="sound-wave"
