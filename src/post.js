@@ -2,6 +2,18 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { useVoiceRecorder } from "use-voice-recorder";
 import Cookies from "universal-cookie";
+import { Map, Marker, Popup, TileLayer } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import icon from "leaflet/dist/images/marker-icon.png";
+import iconShadow from "leaflet/dist/images/marker-shadow.png";
+
+let DefaultIcon = L.icon({
+  iconUrl: icon,
+  shadowUrl: iconShadow,
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
 
 const Post = () => {
   useEffect(() => {
@@ -21,6 +33,13 @@ const Post = () => {
 
   const [lat, setLat] = useState(null);
   const [lon, setLon] = useState(null);
+  const [servCoords, setServCoords] = useState(null);
+
+  const postPost = (result) => {
+    console.log(result.location.coordinates);
+    setBlobUrl(result.url);
+    setServCoords(result.location.coordinates);
+  };
 
   const post = () => {
     const location = JSON.stringify({
@@ -42,7 +61,7 @@ const Post = () => {
 
     fetch("https://audiosharebackend.herokuapp.com/audiopost/", requestOptions)
       .then((response) => response.json())
-      .then((result) => setBlobUrl(result.url))
+      .then((result) => postPost(result))
       .catch((error) => console.log("error", error));
   };
 
@@ -78,6 +97,19 @@ const Post = () => {
         <div>
           <audio src={blobURL} controls preload={"metadata"} />
         </div>
+      )}
+      {servCoords && (
+        <Map center={servCoords} zoom={20}>
+          <TileLayer
+            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Marker position={servCoords}>
+            <Popup>
+              A pretty CSS3 popup. <br /> Easily customizable.
+            </Popup>
+          </Marker>
+        </Map>
       )}
     </div>
   );
