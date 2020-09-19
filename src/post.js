@@ -23,7 +23,7 @@ const Post = () => {
       console.log("Latitude is :", position.coords.latitude);
       console.log("Longitude is :", position.coords.longitude);
     });
-  }, []);
+  });
 
   const [blobURL, setBlobUrl] = useState(null);
   const [blob, setBlob] = useState(null);
