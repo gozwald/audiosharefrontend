@@ -83,7 +83,7 @@ const Post = () => {
           {blob && (
             <div>
               <audio
-                src={window.URL.createObjectURL(blob)}
+                src={URL.createObjectURL(blob)}
                 controls
                 preload={"metadata"}
               />
