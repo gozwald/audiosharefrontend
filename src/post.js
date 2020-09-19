@@ -7,6 +7,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
+import { usePosition } from "use-position";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -16,14 +17,17 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const Post = () => {
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setLat(position.coords.latitude);
-      setLon(position.coords.longitude);
-      console.log("Latitude is :", position.coords.latitude);
-      console.log("Longitude is :", position.coords.longitude);
-    });
+  const watch = true;
+  const { latitude, longitude } = usePosition(watch, {
+    enableHighAccuracy: true,
   });
+
+  useEffect(() => {
+    setLat(latitude);
+    setLon(longitude);
+    console.log("Latitude is :", latitude);
+    console.log("Longitude is :", longitude);
+  }, [latitude, longitude]);
 
   const [blobURL, setBlobUrl] = useState(null);
   const [blob, setBlob] = useState(null);
