@@ -71,7 +71,7 @@ const FindPosts = () => {
                 </Marker>
               ))}
             </MarkerClusterGroup>
-            }
+            )
           </Map>
         )}
       </div>
