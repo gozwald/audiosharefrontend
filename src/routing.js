@@ -8,13 +8,13 @@ import FindPosts from "./findPosts";
 const Router = () => {
   return (
     <Switch>
-      <Route exact={true} path="/">
+      <Route exact path="/">
         <Login />
       </Route>
-      <Route path="/findposts">
+      <Route exact path="/findposts">
         <FindPosts />
       </Route>
-      <Route path="/post">
+      <Route exact path="/post">
         <Post />
       </Route>
     </Switch>
