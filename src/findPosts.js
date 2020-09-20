@@ -3,9 +3,11 @@ import "./App.css";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import "react-leaflet-markercluster/dist/styles.min.css";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import { usePosition } from "use-position";
+import MarkerClusterGroup from "react-leaflet-markercluster";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -51,21 +53,25 @@ const FindPosts = () => {
       </div>
       <div>
         {results && (
-          <Map center={[latitude, longitude]} zoom={15}>
+          <Map
+            className="markercluster-map"
+            center={[latitude, longitude]}
+            zoom={15}
+          >
             <TileLayer
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={[latitude, longitude]}>
-              <Popup>
-                <audio src={""} controls preload={"metadata"} />
-              </Popup>
-            </Marker>
-            <Marker position={[latitude, longitude]}>
-              <Popup>
-                <audio src={""} controls preload={"metadata"} />
-              </Popup>
-            </Marker>
+            <MarkerClusterGroup>
+              {results.map((e) => (
+                <Marker position={e.location.coordinates}>
+                  <Popup>
+                    <audio src={e.audioContent} controls preload={"metadata"} />
+                  </Popup>
+                </Marker>
+              ))}
+            </MarkerClusterGroup>
+            }
           </Map>
         )}
       </div>
