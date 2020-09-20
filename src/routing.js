@@ -3,10 +3,14 @@ import "./login.css";
 import Post from "./post";
 import Login from "./login";
 import { Switch, Route } from "react-router-dom";
+import FindPosts from "./findPosts";
 
 const Router = () => {
   return (
     <Switch>
+      <Route path="/findposts">
+        <FindPosts />
+      </Route>
       <Route path="/post">
         <Post />
       </Route>
