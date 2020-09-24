@@ -38,8 +38,8 @@ const FindPosts = () => {
       body: raw,
       redirect: "follow",
     };
-
-    fetch("https://audiosharebackend.herokuapp.com/findposts/", requestOptions)
+    fetch("http://localhost:3000/findposts/", requestOptions)
+      // fetch("https://audiosharebackend.herokuapp.com/findposts/", requestOptions)
       .then((response) => response.json())
       .then((result) => postFind(result))
       .catch((error) => console.log("error", error));
