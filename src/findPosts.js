@@ -23,7 +23,6 @@ const FindPosts = () => {
 
   const postFind = (result) => {
     setResults(result);
-    console.log(result);
   };
 
   const find = () => {
@@ -67,6 +66,9 @@ const FindPosts = () => {
                 <Marker position={e.location.coordinates}>
                   <Popup>
                     <audio src={e.audioContent} controls preload={"metadata"} />
+                    {e.chats.map((e) => (
+                      <div>{e.message}</div>
+                    ))}
                   </Popup>
                 </Marker>
               ))}
