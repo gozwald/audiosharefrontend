@@ -6,8 +6,9 @@ import "leaflet/dist/leaflet.css";
 import "react-leaflet-markercluster/dist/styles.min.css";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
-import { usePosition } from "use-position";
+// import { usePosition } from "use-position";
 import MarkerClusterGroup from "react-leaflet-markercluster";
+import AudChatRetrieve from "./AudioChatRetrieval";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -17,9 +18,16 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const FindPosts = () => {
-  const watch = true;
-  const { latitude, longitude } = usePosition(watch);
+  // const watch = true;
+  // const { latitude, longitude } = usePosition(watch);
   const [results, setResults] = useState(false);
+
+  // temp vars with known posts
+
+  const latitude = 43.935169099999996;
+  const longitude = 6.0679194;
+
+  //
 
   const postFind = (result) => {
     setResults(result);
@@ -62,13 +70,10 @@ const FindPosts = () => {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <MarkerClusterGroup>
-              {results.map((e) => (
-                <Marker position={e.location.coordinates}>
+              {results.map((ev, ind) => (
+                <Marker key={ind} position={ev.location.coordinates}>
                   <Popup>
-                    <audio src={e.audioContent} controls preload={"metadata"} />
-                    {e.chats.map((e) => (
-                      <div>{e.message}</div>
-                    ))}
+                    <AudChatRetrieve ev={ev} />
                   </Popup>
                 </Marker>
               ))}
