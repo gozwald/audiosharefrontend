@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import "./App.css";
 
 const AudChatRetrieve = ({ ev }) => {
-  console.log(ev);
   const [value, setValue] = useState("");
-  const [chatList, setChatList] = useState(null);
+  const [chatList, setChatList] = useState(ev.chats);
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -12,7 +11,12 @@ const AudChatRetrieve = ({ ev }) => {
 
   const handleSubmit = (ev, e) => {
     e.preventDefault();
-    post(ev._id);
+    if (value) {
+      post(ev._id);
+      setValue("");
+    } else {
+      alert("type something dammit!");
+    }
   };
 
   const post = (newPost) => {
@@ -41,10 +45,7 @@ const AudChatRetrieve = ({ ev }) => {
   return (
     <>
       <audio src={ev.audioContent} controls preload={"metadata"} />
-      {chatList
-        ? chatList.map((e, ind) => <div key={ind}>{e.message}</div>)
-        : ev.chats.map((e, ind) => <div key={ind}>{e.message}</div>)}
-
+      {chatList && chatList.map((e, ind) => <div key={ind}>{e.message}</div>)}
       <form onSubmit={(e) => handleSubmit(ev, e)}>
         <label>
           Respond!
