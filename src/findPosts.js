@@ -61,7 +61,7 @@ const FindPosts = () => {
           <Map
             className="markercluster-map"
             center={[latitude, longitude]}
-            zoom={20}
+            zoom={15}
             touchZoom
           >
             <TileLayer
