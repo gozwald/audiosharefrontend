@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { usePosition } from "use-position";
 import { Map, TileLayer } from "react-leaflet";
@@ -21,15 +21,18 @@ const FindPosts = () => {
   const watch = true;
   const { latitude, longitude } = usePosition(watch);
   const [results, setResults] = useState(false);
-  const [viewport, setViewport] = useState(null);
+  const [viewport, setViewport] = useState({
+    center: [43.935169099999996, 6.0679194],
+    zoom: 15,
+  });
 
-  useEffect(
-    () =>
-      latitude &&
-      longitude &&
-      setViewport({ center: [latitude, longitude], zoom: 15 }),
-    [latitude, longitude]
-  );
+  // useEffect(
+  //   () =>
+  //     latitude &&
+  //     longitude &&
+  //     setViewport({ center: [latitude, longitude], zoom: 15 }),
+  //   [latitude, longitude]
+  // );
 
   // temp consts with known posts
 
