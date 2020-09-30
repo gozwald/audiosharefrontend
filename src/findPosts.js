@@ -58,7 +58,11 @@ const FindPosts = () => {
       </div>
       <div>
         {results && (
-          <Map className="markercluster-map" center={[latitude, longitude]}>
+          <Map
+            className="markercluster-map"
+            center={[latitude, longitude]}
+            zoom={20}
+          >
             <TileLayer
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
