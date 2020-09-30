@@ -16,10 +16,11 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const AudChatRetrieve = ({ ev }) => {
-  const ENDPOINT = "http://localhost:3000/";
+  //   const ENDPOINT = "http://localhost:3000/";
+  const ENDPOINT = "https://audiosharebackend.herokuapp.com";
 
   const [value, setValue] = useState("");
-  const [chatList, setChatList] = useState(ev.chats);
+  const [chatList, setChatList] = useState(null);
   const [open, setOpen] = useState(false);
 
   const handleChange = (event) => {
@@ -52,26 +53,47 @@ const AudChatRetrieve = ({ ev }) => {
       body: raw,
       redirect: "follow",
     };
-    fetch("http://localhost:3000/chatpost/", requestOptions)
-      // fetch("https://audiosharebackend.herokuapp.com/findposts/", requestOptions)
+    // fetch("http://localhost:3000/chatpost/", requestOptions)
+    fetch("https://audiosharebackend.herokuapp.com/findposts/", requestOptions)
       .then((response) => response.json())
       .then((result) => setChatList(result.chats))
       .catch((error) => console.log("error", error));
   };
 
+  const getChats = (id) => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+      id,
+    });
+
+    const requestOptions = {
+      method: "PUT",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+    // fetch("http://localhost:3000/getchats/", requestOptions)
+    fetch("https://audiosharebackend.herokuapp.com/getchats/", requestOptions)
+      .then((response) => response.json())
+      .then((result) => setChatList(result.chats), setOpen(true))
+      .catch((error) => console.log("error", error));
+  };
+
   useEffect(() => {
     const socket = socketIOClient(ENDPOINT);
-    socket.on(ev._id, (e) => {
-      setChatList([...chatList, { username: e.username, message: e.message }]);
+    socket.on(ev._id, () => {
+      getChats(ev._id);
     });
 
     return () => socket.disconnect();
-  });
+  }, [chatList, ev._id]);
 
   return (
     <>
       <Marker position={ev.location.coordinates}>
-        <Popup onOpen={() => setOpen(true)}>
+        <Popup onOpen={() => getChats(ev._id)}>
           {open ? (
             <>
               <audio src={ev.audioContent} controls preload={"metadata"} />

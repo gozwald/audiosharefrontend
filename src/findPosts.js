@@ -18,14 +18,14 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const FindPosts = () => {
-  // const watch = true;
-  // const { latitude, longitude } = usePosition(watch);
+  const watch = true;
+  const { latitude, longitude } = usePosition(watch);
   const [results, setResults] = useState(false);
 
   // temp consts with known posts
 
-  const latitude = 43.935169099999996;
-  const longitude = 6.0679194;
+  // const latitude = 43.935169099999996;
+  // const longitude = 6.0679194;
 
   const postFind = (result) => {
     setResults(result);
@@ -43,8 +43,8 @@ const FindPosts = () => {
       body: raw,
       redirect: "follow",
     };
-    fetch("http://localhost:3000/findposts/", requestOptions)
-      // fetch("https://audiosharebackend.herokuapp.com/findposts/", requestOptions)
+    // fetch("http://localhost:3000/findposts/", requestOptions)
+    fetch("https://audiosharebackend.herokuapp.com/findposts/", requestOptions)
       .then((response) => response.json())
       .then((result) => postFind(result))
       .catch((error) => console.log("error", error));
