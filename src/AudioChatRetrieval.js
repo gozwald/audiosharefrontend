@@ -54,7 +54,7 @@ const AudChatRetrieve = ({ ev }) => {
       redirect: "follow",
     };
     // fetch("http://localhost:3000/chatpost/", requestOptions)
-    fetch("https://audiosharebackend.herokuapp.com/findposts/", requestOptions)
+    fetch("https://audiosharebackend.herokuapp.com/chatpost/", requestOptions)
       .then((response) => response.json())
       .then((result) => setChatList(result.chats))
       .catch((error) => console.log("error", error));
