@@ -62,7 +62,7 @@ const FindPosts = () => {
             className="markercluster-map"
             center={[latitude, longitude]}
             zoom={15}
-            touchZoom
+            viewport={{}}
           >
             <TileLayer
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
