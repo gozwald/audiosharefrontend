@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { usePosition } from "use-position";
 import { Map, TileLayer } from "react-leaflet";
@@ -21,6 +21,15 @@ const FindPosts = () => {
   const watch = true;
   const { latitude, longitude } = usePosition(watch);
   const [results, setResults] = useState(false);
+  const [viewport, setViewport] = useState(null);
+
+  useEffect(
+    () =>
+      latitude &&
+      longitude &&
+      setViewport({ center: [latitude, longitude], zoom: 15 }),
+    [latitude, longitude]
+  );
 
   // temp consts with known posts
 
@@ -60,9 +69,8 @@ const FindPosts = () => {
         {results && (
           <Map
             className="markercluster-map"
-            center={[latitude, longitude]}
-            zoom={15}
-            viewport={{}}
+            viewport={viewport}
+            onViewportChanged={(e) => setViewport(e)}
           >
             <TileLayer
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
