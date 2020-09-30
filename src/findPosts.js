@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import { usePosition } from "use-position";
+// import { usePosition } from "use-position";
 import { Map, TileLayer } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -18,8 +18,8 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const FindPosts = () => {
-  const watch = true;
-  const { latitude, longitude } = usePosition(watch);
+  // const watch = true;
+  // const { latitude, longitude } = usePosition(watch);
   const [results, setResults] = useState(false);
   const [viewport, setViewport] = useState({
     center: [43.935169099999996, 6.0679194],
@@ -36,8 +36,8 @@ const FindPosts = () => {
 
   // temp consts with known posts
 
-  // const latitude = 43.935169099999996;
-  // const longitude = 6.0679194;
+  const latitude = 43.935169099999996;
+  const longitude = 6.0679194;
 
   const postFind = (result) => {
     setResults(result);
