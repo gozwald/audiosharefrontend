@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
-// import { usePosition } from "use-position";
+import { usePosition } from "use-position";
 import { Map, TileLayer } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -18,26 +18,25 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const FindPosts = () => {
-  // const watch = true;
-  // const { latitude, longitude } = usePosition(watch);
+  const watch = true;
+  const { latitude, longitude } = usePosition(watch);
   const [results, setResults] = useState(false);
-  const [viewport, setViewport] = useState({
-    center: [43.935169099999996, 6.0679194],
-    zoom: 15,
-  });
+  const [viewport, setViewport] = useState();
 
-  // useEffect(
-  //   () =>
-  //     latitude &&
-  //     longitude &&
-  //     setViewport({ center: [latitude, longitude], zoom: 15 }),
-  //   [latitude, longitude]
-  // );
+  useEffect(
+    () =>
+      latitude &&
+      longitude &&
+      setViewport({ center: [latitude, longitude], zoom: 15 }),
+    [latitude, longitude]
+  );
+
+  console.log(viewport);
 
   // temp consts with known posts
 
-  const latitude = 43.935169099999996;
-  const longitude = 6.0679194;
+  // const latitude = 43.935169099999996;
+  // const longitude = 6.0679194;
 
   const postFind = (result) => {
     setResults(result);
@@ -63,32 +62,34 @@ const FindPosts = () => {
   };
 
   return latitude && longitude ? (
-    <div>
-      <h1>Whats around me...</h1>
+    <>
       <div>
-        <button onClick={find}>Go!</button>
+        <h1>Whats around me...</h1>
+        <div>
+          <button onClick={find}>Go!</button>
+        </div>
+        <div>
+          {results && (
+            <Map
+              className="markercluster-map"
+              viewport={viewport}
+              onViewportChanged={(e) => setViewport(e)}
+            >
+              <TileLayer
+                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <MarkerClusterGroup>
+                {results.map((ev, ind) => (
+                  <AudChatRetrieve key={ind} ev={ev} />
+                ))}
+              </MarkerClusterGroup>
+              )
+            </Map>
+          )}
+        </div>
       </div>
-      <div>
-        {results && (
-          <Map
-            className="markercluster-map"
-            viewport={viewport}
-            onViewportChanged={(e) => setViewport(e)}
-          >
-            <TileLayer
-              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <MarkerClusterGroup>
-              {results.map((ev, ind) => (
-                <AudChatRetrieve key={ind} ev={ev} />
-              ))}
-            </MarkerClusterGroup>
-            )
-          </Map>
-        )}
-      </div>
-    </div>
+    </>
   ) : (
     "Site requires GPS to proceed, or loading gps coordinates"
   );
