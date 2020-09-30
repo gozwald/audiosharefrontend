@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { usePosition } from "use-position";
 import { Map, TileLayer } from "react-leaflet";
@@ -21,17 +21,15 @@ const FindPosts = () => {
   const watch = true;
   const { latitude, longitude } = usePosition(watch);
   const [results, setResults] = useState(false);
-  const [viewport, setViewport] = useState();
+  const [viewport, setViewport] = useState(null);
 
-  useEffect(
-    () =>
-      latitude &&
-      longitude &&
-      setViewport({ center: [latitude, longitude], zoom: 15 }),
-    [latitude, longitude]
-  );
-
-  console.log(viewport);
+  // useEffect(
+  //   () =>
+  //     latitude &&
+  //     longitude &&
+  //     setViewport({ center: [latitude, longitude], zoom: 15 }),
+  //   [latitude, longitude]
+  // );
 
   // temp consts with known posts
 
@@ -72,7 +70,14 @@ const FindPosts = () => {
           {results && (
             <Map
               className="markercluster-map"
-              viewport={viewport}
+              viewport={
+                viewport
+                  ? viewport
+                  : {
+                      center: [latitude, longitude],
+                      zoom: 15,
+                    }
+              }
               onViewportChanged={(e) => setViewport(e)}
             >
               <TileLayer
