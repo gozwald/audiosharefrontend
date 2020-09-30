@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import "./App.css";
-import { Map, Marker, Popup, TileLayer } from "react-leaflet";
+import { usePosition } from "use-position";
+import { Map, TileLayer } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "react-leaflet-markercluster/dist/styles.min.css";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
-// import { usePosition } from "use-position";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import AudChatRetrieve from "./AudioChatRetrieval";
 
@@ -22,24 +22,22 @@ const FindPosts = () => {
   // const { latitude, longitude } = usePosition(watch);
   const [results, setResults] = useState(false);
 
-  // temp vars with known posts
+  // temp consts with known posts
 
   const latitude = 43.935169099999996;
   const longitude = 6.0679194;
-
-  //
 
   const postFind = (result) => {
     setResults(result);
   };
 
   const find = () => {
-    var myHeaders = new Headers();
+    const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    var raw = JSON.stringify({ location: [latitude, longitude] });
+    const raw = JSON.stringify({ location: [latitude, longitude] });
 
-    var requestOptions = {
+    const requestOptions = {
       method: "POST",
       headers: myHeaders,
       body: raw,
@@ -71,11 +69,7 @@ const FindPosts = () => {
             />
             <MarkerClusterGroup>
               {results.map((ev, ind) => (
-                <Marker key={ind} position={ev.location.coordinates}>
-                  <Popup>
-                    <AudChatRetrieve ev={ev} />
-                  </Popup>
-                </Marker>
+                <AudChatRetrieve key={ind} ev={ev} />
               ))}
             </MarkerClusterGroup>
             )

@@ -29,7 +29,6 @@ const Post = () => {
   const [servCoords, setServCoords] = useState(null);
 
   const postPost = (result) => {
-    console.log(result.location.coordinates);
     setBlobUrl(result.url);
     setServCoords(result.location.coordinates);
   };
