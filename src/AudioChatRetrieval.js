@@ -92,6 +92,7 @@ const AudChatRetrieve = ({ ev }) => {
     <>
       <Marker position={ev.location.coordinates}>
         <Popup
+          autoPan={false}
           //   onClose={() => socket.disconnect()}
           onOpen={() => getChats(ev._id)}
         >

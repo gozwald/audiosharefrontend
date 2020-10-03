@@ -82,23 +82,21 @@ const FindPosts = () => {
           {results && (
             <Map
               className="markercluster-map"
-              viewport={
-                // viewport
-
-                //   ? viewport
-                {
-                  center: [latitude, longitude],
-                  zoom: 15,
-                }
-              }
-              // onViewportChanged={(e) => setViewport(e)}
+              viewport={{
+                center: [latitude, longitude],
+                zoom: 15,
+              }}
+              onViewportChanged={(e) => {
+                console.log(e);
+                // setViewport(e);
+              }}
             >
               <TileLayer
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
               <Marker position={[latitude, longitude]} icon={green}>
-                <Popup>
+                <Popup autoPan={false}>
                   <Post coords={[latitude, longitude]} />
                 </Popup>
               </Marker>
