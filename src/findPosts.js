@@ -53,10 +53,11 @@ const FindPosts = () => {
 
   useEffect(() => {
     if (latitude && longitude) {
-      setViewport({
-        center: [latitude, longitude],
-        zoom: 15,
-      });
+      if (!viewport)
+        setViewport({
+          center: [latitude, longitude],
+          zoom: 15,
+        });
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
 
@@ -77,7 +78,7 @@ const FindPosts = () => {
         .then((result) => postFind(result))
         .catch((error) => console.log("error", error));
     }
-  }, [latitude, longitude]);
+  }, [latitude, longitude, viewport]);
 
   return latitude && longitude && viewport ? (
     <>
