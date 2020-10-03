@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { usePosition } from "use-position";
-import { Map, TileLayer } from "react-leaflet";
+import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "react-leaflet-markercluster/dist/styles.min.css";
@@ -9,6 +9,8 @@ import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import AudChatRetrieve from "./AudioChatRetrieval";
+import mylocation from "./images/mylocation.png";
+import Post from "./post";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -17,11 +19,20 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
+const green = L.icon({
+  iconUrl: mylocation,
+  iconSize: [95, 75], // size of the icon
+  // shadowSize: [50, 64], // size of the shadow
+  iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+  // shadowAnchor: [4, 62], // the same for the shadow
+  popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
+});
+
 const FindPosts = () => {
   const watch = true;
   const { latitude, longitude } = usePosition(watch);
   const [results, setResults] = useState(false);
-  const [viewport, setViewport] = useState(null);
+  // const [viewport, setViewport] = useState(null);
 
   // useEffect(
   //   () =>
@@ -40,50 +51,54 @@ const FindPosts = () => {
     setResults(result);
   };
 
-  const find = () => {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+  useEffect(() => {
+    if (latitude && longitude) {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
 
-    const raw = JSON.stringify({ location: [latitude, longitude] });
+      const raw = JSON.stringify({ location: [latitude, longitude] });
 
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
-    // fetch("http://localhost:3000/findposts/", requestOptions)
-    fetch("https://audiosharebackend.herokuapp.com/findposts/", requestOptions)
-      .then((response) => response.json())
-      .then((result) => postFind(result))
-      .catch((error) => console.log("error", error));
-  };
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+      fetch("http://localhost:3000/findposts/", requestOptions)
+        // fetch("https://audiosharebackend.herokuapp.com/findposts/", requestOptions)
+        .then((response) => response.json())
+        .then((result) => postFind(result))
+        .catch((error) => console.log("error", error));
+    }
+  }, [latitude, longitude]);
 
   return latitude && longitude ? (
     <>
       <div>
-        <h1>Whats around me...</h1>
-        <div>
-          <button onClick={find}>Go!</button>
-        </div>
         <div>
           {results && (
             <Map
               className="markercluster-map"
               viewport={
-                viewport
-                  ? viewport
-                  : {
-                      center: [latitude, longitude],
-                      zoom: 15,
-                    }
+                // viewport
+
+                //   ? viewport
+                {
+                  center: [latitude, longitude],
+                  zoom: 15,
+                }
               }
-              onViewportChanged={(e) => setViewport(e)}
+              // onViewportChanged={(e) => setViewport(e)}
             >
               <TileLayer
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
+              <Marker position={[latitude, longitude]} icon={green}>
+                <Popup>
+                  <Post coords={[latitude, longitude]} />
+                </Popup>
+              </Marker>
               <MarkerClusterGroup>
                 {results.map((ev, ind) => (
                   <AudChatRetrieve key={ind} ev={ev} />

@@ -34,7 +34,7 @@ const Login = () => {
 
   return (
     <div>
-      {loggedIn && <Redirect to="/post" />}
+      {loggedIn && <Redirect to="/findposts" />}
       <div className="main">
         <p className="sign" align="center">
           Sign in

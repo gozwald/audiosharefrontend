@@ -18,6 +18,7 @@ L.Marker.prototype.options.icon = DefaultIcon;
 const AudChatRetrieve = ({ ev }) => {
   //   const ENDPOINT = "http://localhost:3000/";
   const ENDPOINT = "https://audiosharebackend.herokuapp.com";
+  const socket = socketIOClient(ENDPOINT);
 
   const [value, setValue] = useState("");
   const [chatList, setChatList] = useState(null);
@@ -82,18 +83,18 @@ const AudChatRetrieve = ({ ev }) => {
   };
 
   useEffect(() => {
-    const socket = socketIOClient(ENDPOINT);
     socket.on(ev._id, () => {
       getChats(ev._id);
     });
-
-    return () => socket.disconnect();
-  }, [chatList, ev._id]);
+  }, [socket, ev._id]);
 
   return (
     <>
       <Marker position={ev.location.coordinates}>
-        <Popup onOpen={() => getChats(ev._id)}>
+        <Popup
+          //   onClose={() => socket.disconnect()}
+          onOpen={() => getChats(ev._id)}
+        >
           {open ? (
             <>
               <audio src={ev.audioContent} controls preload={"metadata"} />
