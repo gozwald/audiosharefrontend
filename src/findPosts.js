@@ -86,7 +86,8 @@ const FindPosts = () => {
         <div>
           {results && (
             <Map
-              maxZoom={20}
+              ref={(e) => console.log(e)}
+              maxZoom={29}
               className="markercluster-map"
               viewport={viewport}
               // onViewportChanged={(e) => {
