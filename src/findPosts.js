@@ -29,7 +29,7 @@ const green = L.icon({
 });
 
 const FindPosts = () => {
-  const watch = true;
+  const watch = false;
   const { latitude, longitude } = usePosition(watch);
   const [results, setResults] = useState(false);
   const [viewport, setViewport] = useState(null);
