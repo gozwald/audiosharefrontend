@@ -32,7 +32,7 @@ const FindPosts = () => {
   const watch = true;
   const { latitude, longitude } = usePosition(watch);
   const [results, setResults] = useState(false);
-  // const [viewport, setViewport] = useState(null);
+  const [viewport, setViewport] = useState(null);
 
   // useEffect(
   //   () =>
@@ -64,11 +64,8 @@ const FindPosts = () => {
         body: raw,
         redirect: "follow",
       };
-      // fetch("http://localhost:3000/findposts/", requestOptions)
-      fetch(
-        "https://audiosharebackend.herokuapp.com/findposts/",
-        requestOptions
-      )
+      fetch("http://localhost:3000/findposts/", requestOptions)
+        // fetch("https://audiosharebackend.herokuapp.com/findposts/", requestOptions)
         .then((response) => response.json())
         .then((result) => postFind(result))
         .catch((error) => console.log("error", error));
@@ -82,13 +79,16 @@ const FindPosts = () => {
           {results && (
             <Map
               className="markercluster-map"
-              viewport={{
-                center: [latitude, longitude],
-                zoom: 15,
-              }}
+              viewport={
+                viewport
+                  ? viewport
+                  : {
+                      center: [latitude, longitude],
+                      zoom: 15,
+                    }
+              }
               onViewportChanged={(e) => {
-                console.log(e);
-                // setViewport(e);
+                setViewport(e);
               }}
             >
               <TileLayer
