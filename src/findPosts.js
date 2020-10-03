@@ -53,6 +53,10 @@ const FindPosts = () => {
 
   useEffect(() => {
     if (latitude && longitude) {
+      setViewport({
+        center: [latitude, longitude],
+        zoom: 15,
+      });
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
 
@@ -72,21 +76,14 @@ const FindPosts = () => {
     }
   }, [latitude, longitude]);
 
-  return latitude && longitude ? (
+  return latitude && longitude && viewport ? (
     <>
       <div>
         <div>
           {results && (
             <Map
               className="markercluster-map"
-              viewport={
-                viewport
-                  ? viewport
-                  : {
-                      center: [latitude, longitude],
-                      zoom: 15,
-                    }
-              }
+              viewport={viewport}
               onViewportChanged={(e) => {
                 setViewport(e);
               }}
