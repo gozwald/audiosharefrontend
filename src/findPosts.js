@@ -86,11 +86,12 @@ const FindPosts = () => {
         <div>
           {results && (
             <Map
+              maxZoom={20}
               className="markercluster-map"
               viewport={viewport}
-              onViewportChanged={(e) => {
-                setViewport(e);
-              }}
+              // onViewportChanged={(e) => {
+              //   setViewport(e);
+              // }}
             >
               <TileLayer
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
