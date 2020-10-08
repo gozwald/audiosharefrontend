@@ -80,39 +80,35 @@ const FindPosts = () => {
 
   return latitude && longitude && viewport ? (
     <>
-      <div>
-        <div>
-          {results && (
-            <Map
-              maxZoom={19}
-              className="markercluster-map"
-              viewport={viewport}
-              // onViewportChanged={(e) => {
-              //   setViewport(e);
-              // }}
-            >
-              <TileLayer
-                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <Control position="bottomright">
-                <Post trig={trigRender} coords={[latitude, longitude]} />
-              </Control>
-              <Marker position={[latitude, longitude]} icon={green}>
-                <Popup autoPan={false}>
-                  {/* <Post coords={[latitude, longitude]} /> */}
-                </Popup>
-              </Marker>
-              <MarkerClusterGroup>
-                {results.map((ev, ind) => (
-                  <AudChatRetrieve key={ind} ev={ev} />
-                ))}
-              </MarkerClusterGroup>
-              )
-            </Map>
-          )}
-        </div>
-      </div>
+      {results && (
+        <Map
+          maxZoom={19}
+          className="markercluster-map"
+          viewport={viewport}
+          // onViewportChanged={(e) => {
+          //   setViewport(e);
+          // }}
+        >
+          <TileLayer
+            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Control position="bottomright">
+            <Post trig={trigRender} coords={[latitude, longitude]} />
+          </Control>
+          <Marker position={[latitude, longitude]} icon={green}>
+            <Popup autoPan={false}>
+              {/* <Post coords={[latitude, longitude]} /> */}
+            </Popup>
+          </Marker>
+          <MarkerClusterGroup>
+            {results.map((ev, ind) => (
+              <AudChatRetrieve key={ind} ev={ev} />
+            ))}
+          </MarkerClusterGroup>
+          )
+        </Map>
+      )}
     </>
   ) : (
     "Site requires GPS to proceed, or loading gps coordinates"
