@@ -11,6 +11,7 @@ import MarkerClusterGroup from "react-leaflet-markercluster";
 import AudChatRetrieve from "./AudioChatRetrieval";
 import mylocation from "./images/mylocation.png";
 import Post from "./post";
+import Control from "react-leaflet-control";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -33,26 +34,23 @@ const FindPosts = () => {
   const { latitude, longitude } = usePosition(watch);
   const [results, setResults] = useState(false);
   const [viewport, setViewport] = useState(null);
-
-  // useEffect(
-  //   () =>
-  //     latitude &&
-  //     longitude &&
-  //     setViewport({ center: [latitude, longitude], zoom: 15 }),
-  //   [latitude, longitude]
-  // );
+  const [triggerRender, setTriggerRender] = useState(true);
 
   // temp consts with known posts
 
   // const latitude = 43.935169099999996;
   // const longitude = 6.0679194;
+  const trigRender = () => {
+    setTriggerRender(true);
+    console.log(triggerRender);
+  };
 
   const postFind = (result) => {
     setResults(result);
   };
 
   useEffect(() => {
-    if (latitude && longitude) {
+    if (latitude && longitude && triggerRender) {
       if (!viewport)
         setViewport({
           center: [latitude, longitude],
@@ -75,10 +73,10 @@ const FindPosts = () => {
         requestOptions
       )
         .then((response) => response.json())
-        .then((result) => postFind(result))
+        .then((result) => postFind(result), setTriggerRender(false))
         .catch((error) => console.log("error", error));
     }
-  }, [latitude, longitude, viewport]);
+  }, [latitude, longitude, viewport, triggerRender]);
 
   return latitude && longitude && viewport ? (
     <>
@@ -97,9 +95,12 @@ const FindPosts = () => {
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
+              <Control position="bottomright">
+                <Post trig={trigRender} coords={[latitude, longitude]} />
+              </Control>
               <Marker position={[latitude, longitude]} icon={green}>
                 <Popup autoPan={false}>
-                  <Post coords={[latitude, longitude]} />
+                  {/* <Post coords={[latitude, longitude]} /> */}
                 </Popup>
               </Marker>
               <MarkerClusterGroup>

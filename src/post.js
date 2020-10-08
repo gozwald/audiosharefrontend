@@ -16,7 +16,7 @@ import Cookies from "universal-cookie";
 
 // L.Marker.prototype.options.icon = DefaultIcon;
 
-const Post = ({ coords }) => {
+const Post = ({ coords, trig }) => {
   // const watch = true;
   // const { latitude, longitude } = usePosition(watch);
 
@@ -30,6 +30,7 @@ const Post = ({ coords }) => {
 
   const postPost = (result) => {
     console.log(result);
+    trig();
     // setBlobUrl(result.url);
     // setServCoords(result.location.coordinates);
   };
@@ -59,18 +60,18 @@ const Post = ({ coords }) => {
   };
 
   return (
-    <div>
+    <div className="container">
       <div>
-        <h1>Voices:</h1>
+        <h1>Record Thyself!</h1>
         <div>
           <h3>On air: {isRecording ? "on" : "off"}</h3>
           <button onClick={start}>Start</button>
           <button onClick={stop}>Stop</button>
         </div>
         <div>
-          <h1>Local Blob:</h1>
           {blob && (
             <div>
+              <h1>Preview:</h1>
               <audio
                 src={window.URL.createObjectURL(blob)}
                 controls
