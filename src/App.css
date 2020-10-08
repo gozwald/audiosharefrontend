@@ -46,13 +46,20 @@ body {
   display: none;
 }
 
-.leaflet-container {
+.mapwrapper {
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  position: fixed;
 }
 
-/* .container {
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.container {
   background-color: white;
   padding: 10px;
   border-radius: 25px;
-} */
+}
