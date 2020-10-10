@@ -9,11 +9,7 @@
 }
 
 .blob {
-  background-image: url("./images/microphone.png");
-  background-color: black;
-  background-size: 70%;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: black;
   border-radius: 50%;
   box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
   margin: 10px;
@@ -68,7 +64,7 @@
   background-size: 70%;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: rgba(255, 82, 82, 1);
+  background-color: rgb(245, 49, 49);
   box-shadow: 0 0 0 0 rgba(255, 82, 82, 1);
   animation: pulse-red 2s infinite;
 }
