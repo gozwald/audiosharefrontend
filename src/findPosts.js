@@ -11,7 +11,7 @@ import MarkerClusterGroup from "react-leaflet-markercluster";
 import AudChatRetrieve from "./AudioChatRetrieval";
 import mylocation from "./images/mylocation.png";
 import Post from "./post";
-import Control from "react-leaflet-control";
+import "./mic.css";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -80,27 +80,17 @@ const FindPosts = () => {
 
   return latitude && longitude && viewport ? (
     <>
+      <Post trig={trigRender} coords={[latitude, longitude]} />
+
       <div className="mapwrapper">
         {results && (
-          <Map
-            maxZoom={19}
-            className="markercluster-map"
-            viewport={viewport}
-            // onViewportChanged={(e) => {
-            //   setViewport(e);
-            // }}
-          >
+          <Map maxZoom={19} className="markercluster-map" viewport={viewport}>
             <TileLayer
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Control position="bottomright">
-              <Post trig={trigRender} coords={[latitude, longitude]} />
-            </Control>
             <Marker position={[latitude, longitude]} icon={green}>
-              <Popup autoPan={false}>
-                {/* <Post coords={[latitude, longitude]} /> */}
-              </Popup>
+              <Popup autoPan={false}></Popup>
             </Marker>
             <MarkerClusterGroup>
               {results.map((ev, ind) => (
