@@ -64,7 +64,7 @@
   background-size: 70%;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: rgb(245, 49, 49);
+  background-color: rgba(255, 82, 82, 1);
   box-shadow: 0 0 0 0 rgba(255, 82, 82, 1);
   animation: pulse-red 2s infinite;
 }
