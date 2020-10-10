@@ -43,7 +43,7 @@ const Post = ({ coords, trig }) => {
     <div className="post-container">
       {/* <h1>Record</h1> */}
 
-      <div className="blob red"></div>
+      <div className="blob green"></div>
 
       <h3>On air: {isRecording ? "on" : "off"}</h3>
       <button onClick={start}>Start</button>
