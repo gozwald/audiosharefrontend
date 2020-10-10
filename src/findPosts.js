@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import { usePosition } from "use-position";
-import { Map, TileLayer, Marker, Popup } from "react-leaflet";
+import { Map, TileLayer, Marker } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "react-leaflet-markercluster/dist/styles.min.css";
@@ -89,9 +89,7 @@ const FindPosts = () => {
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={[latitude, longitude]} icon={green}>
-              <Popup autoPan={false}></Popup>
-            </Marker>
+            <Marker position={[latitude, longitude]} icon={green}></Marker>
             <MarkerClusterGroup>
               {results.map((ev, ind) => (
                 <AudChatRetrieve key={ind} ev={ev} />
