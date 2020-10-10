@@ -41,18 +41,15 @@ const Post = ({ coords, trig }) => {
 
   return (
     <div className="post-container">
-      {/* <h1>Record</h1> */}
-
-      <div className="blob green"></div>
-
-      <h3>On air: {isRecording ? "on" : "off"}</h3>
-      <button onClick={start}>Start</button>
-      <button onClick={stop}>Stop</button>
+      {isRecording ? (
+        <div onClick={stop} className="blob animation"></div>
+      ) : (
+        <div onClick={start} className="blob"></div>
+      )}
 
       <div>
         {blob && (
           <div>
-            <h1>Preview:</h1>
             <audio
               src={window.URL.createObjectURL(blob)}
               controls
