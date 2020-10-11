@@ -79,7 +79,7 @@ const AudChatRetrieve = ({ ev }) => {
     // fetch("http://localhost:3000/getchats/", requestOptions)
     fetch("https://audiosharebackend.herokuapp.com/getchats/", requestOptions)
       .then((response) => response.json())
-      .then((result) => setChatList(result.chats), setOpen(true))
+      .then((result) => setChatList(result.chats))
       .catch((error) => console.log("error", error));
   };
 
@@ -95,8 +95,14 @@ const AudChatRetrieve = ({ ev }) => {
       <Marker position={ev.location.coordinates}>
         <Popup
           autoPan={false}
-          //   onClose={() => socket.disconnect()}
-          onOpen={() => getChats(ev._id)}
+          onClose={() => {
+            socket.disconnect();
+            setOpen(false);
+          }}
+          onOpen={() => {
+            getChats(ev._id);
+            setOpen(true);
+          }}
         >
           {open ? (
             <>
