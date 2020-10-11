@@ -53,7 +53,7 @@ const Post = ({ coords, trig }) => {
               style={{ width: "200px", height: "30px", margin: "10px" }}
               src={window.URL.createObjectURL(blob)}
               controls
-              // preload={"metadata"}
+              preload={"metadata"}
             />
           </div>
         )}

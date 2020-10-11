@@ -15,10 +15,11 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
+const ENDPOINT = "https://audiosharebackend.herokuapp.com";
+const socket = socketIOClient(ENDPOINT);
+
 const AudChatRetrieve = ({ ev }) => {
   //   const ENDPOINT = "http://localhost:3000/";
-  const ENDPOINT = "https://audiosharebackend.herokuapp.com";
-  const socket = socketIOClient(ENDPOINT);
 
   const [value, setValue] = useState("");
   const [chatList, setChatList] = useState(null);
@@ -83,10 +84,11 @@ const AudChatRetrieve = ({ ev }) => {
   };
 
   useEffect(() => {
-    socket.on(ev._id, () => {
-      getChats(ev._id);
-    });
-  }, [socket, ev._id]);
+    open &&
+      socket.on(ev._id, () => {
+        getChats(ev._id);
+      });
+  }, [open, ev._id]);
 
   return (
     <>
