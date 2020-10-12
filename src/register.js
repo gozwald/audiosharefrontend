@@ -1,14 +1,11 @@
-import React, { useState} from "react";
+import React, { useState, useEffect } from "react";
 import "./register.css";
-// import Cookies from "universal-cookie";
-import { Link } from "react-router-dom";
-import ModalCenter from "./modal";
-import Button from 'react-bootstrap/Button';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Cookies from "universal-cookie";
+import { Redirect, Link } from "react-router-dom";
+import TransitionsModal from "./modal"
 
 const Register = () => {
-  // const [loggedIn, setLoggedIn] = useState(false);
-  const [modalShow, setModalShow] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const submit = (e) => {
     e.preventDefault();
@@ -37,15 +34,8 @@ const Register = () => {
 
   return (
     <div>
-      <Button variant="primary" onClick={() => setModalShow(true)}>
-        Launch vertically centered modal
-      </Button>
-
-      <ModalCenter
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-      />
-      {/* {loggedIn && <Redirect to="/findposts" />} */}
+      <TransitionsModal/>
+      {loggedIn && <Redirect to="/findposts" />}
       <div className="main">
         <p className="sign" align="center">
           Sign Up
