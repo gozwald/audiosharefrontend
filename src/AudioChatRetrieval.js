@@ -46,8 +46,10 @@ const AudChatRetrieve = ({ ev }) => {
     const raw = JSON.stringify({
       id: newPost,
       message: value,
-      username: "hash",
+      email: "gozwald@gmail.com"
     });
+
+    console.log(raw)
 
     const requestOptions = {
       method: "PUT",

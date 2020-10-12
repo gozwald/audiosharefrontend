@@ -9,7 +9,7 @@ const Login = () => {
   const submit = (e) => {
     e.preventDefault();
     const data = {
-      username: e.target.username.value,
+      email: e.target.email.value,
       password: e.target.password.value,
     };
 
@@ -41,11 +41,11 @@ const Login = () => {
         </p>
         <form onSubmit={submit} className="form1">
           <input
-            name="username"
+            name="email"
             className="un"
             type="text"
             align="center"
-            placeholder="Username"
+            placeholder="email"
           />
           <input
             name="password"
