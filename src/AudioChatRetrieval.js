@@ -49,8 +49,6 @@ const AudChatRetrieve = ({ ev }) => {
       email: "gozwald@gmail.com"
     });
 
-    console.log(raw)
-
     const requestOptions = {
       method: "PUT",
       headers: myHeaders,
