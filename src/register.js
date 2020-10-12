@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import "./register.css";
+// import "./register.css";
 import Cookies from "universal-cookie";
 import { Redirect, Link } from "react-router-dom";
 
-const Login = () => {
+const Register = () => {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const submit = (e) => {
@@ -35,17 +35,34 @@ const Login = () => {
   return (
     <div>
       {loggedIn && <Redirect to="/findposts" />}
-      <div className="mainlogin">
+      <div className="main">
         <p className="sign" align="center">
-          Sign in!
+          Sign Up
         </p>
         <form onSubmit={submit} className="form1">
           <input
-            name="username"
+            name="first"
             className="un"
             type="text"
             align="center"
-            placeholder="Username"
+            placeholder="First Name"
+            required
+          />
+          <input
+            name="last"
+            className="un"
+            type="text"
+            align="center"
+            placeholder="Last Name"
+            required
+          />
+          <input
+            name="email"
+            className="un"
+            type="email"
+            align="center"
+            placeholder="email"
+            required
           />
           <input
             name="password"
@@ -53,12 +70,12 @@ const Login = () => {
             type="password"
             align="center"
             placeholder="Password"
+            required
           />
-
           <input className="submit" align="center" type="submit" />
 
           <p className="forgot" align="center">
-            <Link to="/">Sign up here!</Link>
+            <Link to="/login/">Sign in here!</Link>
           </p>
         </form>
       </div>
@@ -66,4 +83,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
