@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./register.css";
-import Cookies from "universal-cookie";
-import { Redirect, Link } from "react-router-dom";
+// import Cookies from "universal-cookie";
+import { Link } from "react-router-dom";
 import TransitionsModal from "./modal"
 
 const Register = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  // const [loggedIn, setLoggedIn] = useState(false);
+  const [registered, setRegistered] = useState(null);
+  const [error, setError] = useState(false);
 
   const submit = (e) => {
     e.preventDefault();
@@ -17,25 +19,25 @@ const Register = () => {
     };
 
     fetch("https://audiosharebackend.herokuapp.com/register/", {
+    // fetch("http://localhost:3000/register/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
+      .then((response) => response.status === 200 ? response.json() : setError(true))
+      .then((data) => {setRegistered(data)})
       .catch((error) => {
-        console.error("Error:", error);
+        console.log(error);
       });
   };
 
-  // useEffect(() => {})
-
   return (
     <div>
-      <TransitionsModal/>
-      {loggedIn && <Redirect to="/findposts" />}
+      {error && <TransitionsModal/>}
+      {registered && <TransitionsModal details={registered}/>}
+      {/* {loggedIn && <Redirect to="/findposts" />} */}
       <div className="main">
         <p className="sign" align="center">
           Sign Up

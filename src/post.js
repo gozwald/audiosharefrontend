@@ -31,8 +31,8 @@ const Post = ({ coords, trig }) => {
       method: "POST",
       body: formdata,
     };
-    // fetch("http://localhost:3000/audiopost/", requestOptions)
-    fetch("https://audiosharebackend.herokuapp.com/audiopost/", requestOptions)
+    fetch("http://localhost:3000/audiopost/", requestOptions)
+    // fetch("https://audiosharebackend.herokuapp.com/audiopost/", requestOptions)
       .then((response) => response.json())
       .then((result) => postPost(result))
       .catch((error) => console.log("error", error));
