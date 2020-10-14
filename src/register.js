@@ -4,7 +4,7 @@ import "./register.css";
 import { Link } from "react-router-dom";
 import TransitionsModal from "./modal"
 
-const Register = () => {
+const Register = ({server}) => {
   // const [loggedIn, setLoggedIn] = useState(false);
   const [registered, setRegistered] = useState(null);
   const [error, setError] = useState(false);
@@ -18,7 +18,7 @@ const Register = () => {
       password: e.target.password.value,
     };
 
-    fetch(`${process.env.REACT_APP_SERVER}/register/`, {
+    fetch(`${server}/register/`, {
 
       method: "POST",
       headers: {

@@ -3,7 +3,7 @@ import "./mic.css";
 import { useVoiceRecorder } from "use-voice-recorder";
 import Cookies from "universal-cookie";
 
-const Post = ({ coords, trig }) => {
+const Post = ({ coords, trig, server }) => {
   const [blob, setBlob] = useState(null);
   const { isRecording, stop, start } = useVoiceRecorder((data) => {
     setBlob(data);
@@ -31,7 +31,7 @@ const Post = ({ coords, trig }) => {
       method: "POST",
       body: formdata,
     };
-    fetch(`${process.env.REACT_APP_SERVER}/audiopost/`, requestOptions)
+    fetch(`${server}/audiopost/`, requestOptions)
       .then((response) => response.json())
       .then((result) => postPost(result))
       .catch((error) => console.log("error", error));

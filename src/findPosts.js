@@ -29,7 +29,7 @@ const green = L.icon({
   popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
 });
 
-const FindPosts = () => {
+const FindPosts = ({server}) => {
   const watch = false;
   const { latitude, longitude } = usePosition(watch);
   const [results, setResults] = useState(false);
@@ -68,14 +68,14 @@ const FindPosts = () => {
         redirect: "follow",
       };
       fetch(
-        `${process.env.REACT_APP_SERVER}/findposts`,
+        `${server}/findposts`,
         requestOptions
       )
         .then((response) => response.json())
         .then((result) => postFind(result), setTriggerRender(false))
         .catch((error) => console.log("error", error));
     }
-  }, [latitude, longitude, viewport, triggerRender]);
+  }, [latitude, longitude, viewport, triggerRender, server]);
 
   return latitude && longitude && viewport ? (
     <>
@@ -91,7 +91,7 @@ const FindPosts = () => {
             <Marker position={[latitude, longitude]} icon={green}></Marker>
             <MarkerClusterGroup>
               {results.map((ev, ind) => (
-                <AudChatRetrieve key={ind} ev={ev} />
+                <AudChatRetrieve server={server} key={ind} ev={ev} />
               ))}
             </MarkerClusterGroup>
             )

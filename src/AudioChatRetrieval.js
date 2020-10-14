@@ -15,11 +15,9 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const ENDPOINT = `${process.env.REACT_APP_SERVER}`;
-const socket = socketIOClient(ENDPOINT, { autoConnect: false });
+const socket = socketIOClient("https://audiosharebackend.herokuapp.com", { autoConnect: false });
 
-const AudChatRetrieve = ({ ev }) => {
-
+const AudChatRetrieve = ({ ev, server }) => {
 
   const [value, setValue] = useState("");
   const [chatList, setChatList] = useState(null);
@@ -56,7 +54,7 @@ const AudChatRetrieve = ({ ev }) => {
       redirect: "follow",
     };
 
-    fetch(`${process.env.REACT_APP_SERVER}/chatpost/`, requestOptions)
+    fetch(`${server}/chatpost/`, requestOptions)
       .then((response) => response.json())
       .then((result) => setChatList(result.chats))
       .catch((error) => console.log("error", error));
@@ -76,7 +74,7 @@ const AudChatRetrieve = ({ ev }) => {
       body: raw,
       redirect: "follow",
     };
-    fetch(`${process.env.REACT_APP_SERVER}/getchats/`, requestOptions)
+    fetch(`${server}/getchats/`, requestOptions)
       .then((response) => response.json())
       .then((result) => setChatList(result.chats))
       .catch((error) => console.log("error", error));
@@ -88,6 +86,7 @@ const AudChatRetrieve = ({ ev }) => {
       socket.on(ev._id, () => {
         getChats(ev._id);
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, ev._id]);
 
   return (

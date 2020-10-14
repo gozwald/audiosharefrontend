@@ -5,21 +5,24 @@ import Register from "./register";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import FindPosts from "./findPosts";
 
+const live="https://audiosharebackend.herokuapp.com"
+// const local="http://localhost:3000"
+
 const Router = () => {
   return (
     <BrowserRouter>
       <Switch>
         <Route path="/login/">
-          <Login />
+          <Login server={live} />
         </Route>
         <Route path="/findposts/">
-          <FindPosts />
+          <FindPosts server={live} />
         </Route>
         <Route path="/post/">
-          <Post />
+          <Post server={live} />
         </Route>
         <Route path="/">
-          <Register />
+          <Register server={live} />
         </Route>
       </Switch>
     </BrowserRouter>

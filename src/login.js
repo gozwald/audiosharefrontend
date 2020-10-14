@@ -3,7 +3,7 @@ import "./register.css";
 import Cookies from "universal-cookie";
 import { Redirect, Link } from "react-router-dom";
 
-const Login = () => {
+const Login = ({server}) => {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const submit = (e) => {
@@ -13,7 +13,7 @@ const Login = () => {
       password: e.target.password.value,
     };
 
-    fetch(`${process.env.REACT_APP_SERVER}/login/`, {
+    fetch(`${server}/login/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
