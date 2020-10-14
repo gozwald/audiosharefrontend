@@ -13,8 +13,7 @@ const Login = () => {
       password: e.target.password.value,
     };
 
-    fetch("https://audiosharebackend.herokuapp.com/login/", {
-      // fetch("http://localhost:3000/login/", {
+    fetch(`${process.env.REACT_APP_SERVER}/login/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

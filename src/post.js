@@ -22,17 +22,16 @@ const Post = ({ coords, trig }) => {
 
     const cookies = new Cookies();
 
-    var formdata = new FormData();
+    const formdata = new FormData();
     formdata.append("audio", blob);
     formdata.append("location", location);
     formdata.append("token", cookies.get("token"));
 
-    var requestOptions = {
+    const requestOptions = {
       method: "POST",
       body: formdata,
     };
-    fetch("http://localhost:3000/audiopost/", requestOptions)
-    // fetch("https://audiosharebackend.herokuapp.com/audiopost/", requestOptions)
+    fetch(`${process.env.REACT_APP_SERVER}/audiopost/`, requestOptions)
       .then((response) => response.json())
       .then((result) => postPost(result))
       .catch((error) => console.log("error", error));

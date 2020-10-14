@@ -67,9 +67,8 @@ const FindPosts = () => {
         body: raw,
         redirect: "follow",
       };
-      // fetch("http://localhost:3000/findposts/", requestOptions)
       fetch(
-        "https://audiosharebackend.herokuapp.com/findposts/",
+        `${process.env.REACT_APP_SERVER}/findposts`,
         requestOptions
       )
         .then((response) => response.json())

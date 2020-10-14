@@ -15,10 +15,8 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const ENDPOINT = "https://audiosharebackend.herokuapp.com";
-// const ENDPOINT = "http://localhost:3000/";
-const socket = socketIOClient(ENDPOINT);
-
+const ENDPOINT = `${process.env.REACT_APP_SERVER}`;
+const socket = socketIOClient(ENDPOINT, { autoConnect: false });
 
 const AudChatRetrieve = ({ ev }) => {
 
@@ -57,8 +55,8 @@ const AudChatRetrieve = ({ ev }) => {
       body: raw,
       redirect: "follow",
     };
-    fetch("http://localhost:3000/chatpost/", requestOptions)
-    // fetch("https://audiosharebackend.herokuapp.com/chatpost/", requestOptions)
+
+    fetch(`${process.env.REACT_APP_SERVER}/chatpost/`, requestOptions)
       .then((response) => response.json())
       .then((result) => setChatList(result.chats))
       .catch((error) => console.log("error", error));
@@ -78,8 +76,7 @@ const AudChatRetrieve = ({ ev }) => {
       body: raw,
       redirect: "follow",
     };
-    fetch("http://localhost:3000/getchats/", requestOptions)
-    // fetch("https://audiosharebackend.herokuapp.com/getchats/", requestOptions)
+    fetch(`${process.env.REACT_APP_SERVER}/getchats/`, requestOptions)
       .then((response) => response.json())
       .then((result) => setChatList(result.chats))
       .catch((error) => console.log("error", error));
@@ -87,6 +84,7 @@ const AudChatRetrieve = ({ ev }) => {
 
   useEffect(() => {
     open &&
+      socket.connect();
       socket.on(ev._id, () => {
         getChats(ev._id);
       });
