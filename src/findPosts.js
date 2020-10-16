@@ -12,6 +12,8 @@ import AudChatRetrieve from "./AudioChatRetrieval";
 import mylocation from "./images/mylocation.png";
 import Post from "./post";
 import "./mic.css";
+import Cookies from "universal-cookie";
+import { Redirect } from "react-router-dom";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -29,7 +31,8 @@ const green = L.icon({
   popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
 });
 
-const FindPosts = ({server}) => {
+const FindPosts = ({ server, loggedin }) => {
+  const cookies = new Cookies();
   const watch = false;
   const { latitude, longitude } = usePosition(watch);
   const [results, setResults] = useState(false);
@@ -59,7 +62,10 @@ const FindPosts = ({server}) => {
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
 
-      const raw = JSON.stringify({ location: [latitude, longitude] });
+      const raw = JSON.stringify({
+        location: [latitude, longitude],
+        token: cookies.get("token"),
+      });
 
       const requestOptions = {
         method: "POST",
@@ -67,19 +73,17 @@ const FindPosts = ({server}) => {
         body: raw,
         redirect: "follow",
       };
-      fetch(
-        `${server}/findposts`,
-        requestOptions
-      )
+      fetch(`${server}/findposts`, requestOptions)
         .then((response) => response.json())
         .then((result) => postFind(result), setTriggerRender(false))
         .catch((error) => console.log("error", error));
     }
-  }, [latitude, longitude, viewport, triggerRender, server]);
+  }, [latitude, longitude, viewport, triggerRender, server, cookies]);
 
   return latitude && longitude && viewport ? (
     <>
-      <Post trig={trigRender} coords={[latitude, longitude]} />
+      {!loggedin && <Redirect to="/" />}
+      <Post server={server} trig={trigRender} coords={[latitude, longitude]} />
 
       <div className="mapwrapper">
         {results && (

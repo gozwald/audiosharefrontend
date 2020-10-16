@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import "./register.css";
 // import Cookies from "universal-cookie";
 import { Link } from "react-router-dom";
-import TransitionsModal from "./modal"
+import TransitionsModal from "./modal";
+import { Redirect } from "react-router-dom";
 
-const Register = ({server}) => {
+const Register = ({ server, loggedIn }) => {
   // const [loggedIn, setLoggedIn] = useState(false);
   const [registered, setRegistered] = useState(null);
   const [error, setError] = useState(false);
@@ -19,15 +20,18 @@ const Register = ({server}) => {
     };
 
     fetch(`${server}/register/`, {
-
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     })
-      .then((response) => response.status === 200 ? response.json() : setError(true))
-      .then((data) => {setRegistered(data)})
+      .then((response) =>
+        response.status === 200 ? response.json() : setError(true)
+      )
+      .then((data) => {
+        setRegistered(data);
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -35,8 +39,9 @@ const Register = ({server}) => {
 
   return (
     <div>
-      {error && <TransitionsModal/>}
-      {registered && <TransitionsModal details={registered}/>}
+      {loggedIn && <Redirect to="/findposts" />}
+      {error && <TransitionsModal />}
+      {registered && <TransitionsModal details={registered} />}
       {/* {loggedIn && <Redirect to="/findposts" />} */}
       <div className="main">
         <p className="sign" align="center">
@@ -78,7 +83,7 @@ const Register = ({server}) => {
           <input className="submit" align="center" type="submit" />
 
           <p className="forgot" align="center">
-            <Link to="/login/">Sign in here!</Link>
+            <Link to="/">Sign in here!</Link>
           </p>
         </form>
       </div>

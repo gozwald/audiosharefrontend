@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import "./register.css";
 import Cookies from "universal-cookie";
 import { Redirect, Link } from "react-router-dom";
 
-const Login = ({server}) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+const Login = ({ server, setLoggedIn, loggedIn }) => {
+  // const [error, setError] = useState(false);
+  // const [wrongpass, setWrongPass] = useState(false);
 
   const submit = (e) => {
     e.preventDefault();
@@ -20,7 +21,19 @@ const Login = ({server}) => {
       },
       body: JSON.stringify(data),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        }
+        if (response.status === 401) {
+          alert("wrong password");
+          throw new Error("wrong password");
+        }
+        if (response.status === 500) {
+          alert("error");
+          throw new Error("something went wrong");
+        }
+      })
       .then((data) => {
         const cookies = new Cookies();
         cookies.set("token", data, { path: "/" });
@@ -58,7 +71,7 @@ const Login = ({server}) => {
           <input className="submit" align="center" type="submit" />
 
           <p className="forgot" align="center">
-            <Link to="/">Sign up here!</Link>
+            <Link to="/register/">Sign up here!</Link>
           </p>
         </form>
       </div>

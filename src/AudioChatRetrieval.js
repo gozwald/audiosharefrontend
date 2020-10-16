@@ -7,6 +7,7 @@ import "leaflet/dist/leaflet.css";
 import "react-leaflet-markercluster/dist/styles.min.css";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
+import Cookies from "universal-cookie";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -15,10 +16,13 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const socket = socketIOClient("https://audiosharebackend.herokuapp.com", { autoConnect: false });
+// const socket = socketIOClient("http://localhost:3000", { autoConnect: false });
+const socket = socketIOClient("https://audiosharebackend.herokuapp.com", {
+  autoConnect: false,
+});
 
 const AudChatRetrieve = ({ ev, server }) => {
-
+  const cookies = new Cookies();
   const [value, setValue] = useState("");
   const [chatList, setChatList] = useState(null);
   const [open, setOpen] = useState(false);
@@ -44,7 +48,7 @@ const AudChatRetrieve = ({ ev, server }) => {
     const raw = JSON.stringify({
       id: newPost,
       message: value,
-      email: "gozwald@gmail.com"
+      token: cookies.get("token"),
     });
 
     const requestOptions = {
@@ -66,6 +70,7 @@ const AudChatRetrieve = ({ ev, server }) => {
 
     const raw = JSON.stringify({
       id,
+      token: cookies.get("token"),
     });
 
     const requestOptions = {
@@ -81,12 +86,11 @@ const AudChatRetrieve = ({ ev, server }) => {
   };
 
   useEffect(() => {
-    open &&
-      socket.connect();
-      socket.on(ev._id, () => {
-        getChats(ev._id);
-      });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    open && socket.connect();
+    socket.on(ev._id, () => {
+      getChats(ev._id);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, ev._id]);
 
   return (
