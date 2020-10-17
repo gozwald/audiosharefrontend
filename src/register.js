@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import "./register.css";
-// import Cookies from "universal-cookie";
 import { Link } from "react-router-dom";
 import TransitionsModal from "./modal";
-import { Redirect } from "react-router-dom";
 
-const Register = ({ server, loggedIn }) => {
-  // const [loggedIn, setLoggedIn] = useState(false);
+const Register = ({ server }) => {
   const [registered, setRegistered] = useState(null);
   const [error, setError] = useState(false);
 
@@ -39,10 +36,8 @@ const Register = ({ server, loggedIn }) => {
 
   return (
     <div>
-      {loggedIn && <Redirect to="/findposts" />}
       {error && <TransitionsModal />}
       {registered && <TransitionsModal details={registered} />}
-      {/* {loggedIn && <Redirect to="/findposts" />} */}
       <div className="main">
         <p className="sign" align="center">
           Sign Up

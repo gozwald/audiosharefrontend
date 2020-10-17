@@ -4,9 +4,10 @@ import Register from "./register";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import FindPosts from "./findPosts";
 import Auth from "./auth";
+import { Redirect } from "react-router-dom";
 
-const server = "https://audiosharebackend.herokuapp.com";
-// const server = "http://localhost:3000";
+// const server = "https://audiosharebackend.herokuapp.com";
+const server = "http://localhost:3000";
 
 const Router = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -16,17 +17,21 @@ const Router = () => {
       <Auth setLoggedIn={setLoggedIn} />
       <Switch>
         <Route path="/register/">
-          <Register loggedIn={loggedIn} server={server} />
+          {!loggedIn ? (
+            <Register server={server} />
+          ) : (
+            <Redirect to="/findposts/" />
+          )}
         </Route>
         <Route path="/findposts/">
-          <FindPosts loggedin={loggedIn} server={server} />
+          {loggedIn ? <FindPosts server={server} /> : <Redirect to="/" />}
         </Route>
         <Route exact path="/">
-          <Login
-            loggedIn={loggedIn}
-            setLoggedIn={setLoggedIn}
-            server={server}
-          />
+          {!loggedIn ? (
+            <Login setLoggedIn={setLoggedIn} server={server} />
+          ) : (
+            <Redirect to="/findposts/" />
+          )}
         </Route>
       </Switch>
     </BrowserRouter>

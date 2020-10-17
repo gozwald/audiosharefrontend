@@ -1,12 +1,9 @@
 import React from "react";
 import "./register.css";
 import Cookies from "universal-cookie";
-import { Redirect, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const Login = ({ server, setLoggedIn, loggedIn }) => {
-  // const [error, setError] = useState(false);
-  // const [wrongpass, setWrongPass] = useState(false);
-
+const Login = ({ server, setLoggedIn }) => {
   const submit = (e) => {
     e.preventDefault();
     const data = {
@@ -37,7 +34,6 @@ const Login = ({ server, setLoggedIn, loggedIn }) => {
       .then((data) => {
         const cookies = new Cookies();
         cookies.set("token", data, { path: "/" });
-        console.log("Success:", data);
         setLoggedIn(true);
       })
       .catch((error) => {
@@ -47,7 +43,6 @@ const Login = ({ server, setLoggedIn, loggedIn }) => {
 
   return (
     <div>
-      {loggedIn && <Redirect to="/findposts" />}
       <div className="mainlogin">
         <p className="sign" align="center">
           Sign in!

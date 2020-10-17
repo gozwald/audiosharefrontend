@@ -13,7 +13,6 @@ import mylocation from "./images/mylocation.png";
 import Post from "./post";
 import "./mic.css";
 import Cookies from "universal-cookie";
-import { Redirect } from "react-router-dom";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -31,7 +30,7 @@ const green = L.icon({
   popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
 });
 
-const FindPosts = ({ server, loggedin }) => {
+const FindPosts = ({ server }) => {
   const cookies = new Cookies();
   const watch = false;
   const { latitude, longitude } = usePosition(watch);
@@ -45,7 +44,6 @@ const FindPosts = ({ server, loggedin }) => {
   // const longitude = 6.0679194;
   const trigRender = () => {
     setTriggerRender(true);
-    console.log(triggerRender);
   };
 
   const postFind = (result) => {
@@ -80,31 +78,45 @@ const FindPosts = ({ server, loggedin }) => {
     }
   }, [latitude, longitude, viewport, triggerRender, server, cookies]);
 
-  return latitude && longitude && viewport ? (
-    <>
-      {!loggedin && <Redirect to="/" />}
-      <Post server={server} trig={trigRender} coords={[latitude, longitude]} />
+  // {!loggedin && <Redirect to="/" />}
+  // "Site requires GPS to proceed, or loading gps coordinates"
+  // latitude && longitude && viewport
 
-      <div className="mapwrapper">
-        {results && (
-          <Map maxZoom={19} className="markercluster-map" viewport={viewport}>
-            <TileLayer
-              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <Marker position={[latitude, longitude]} icon={green}></Marker>
-            <MarkerClusterGroup>
-              {results.map((ev, ind) => (
-                <AudChatRetrieve server={server} key={ind} ev={ev} />
-              ))}
-            </MarkerClusterGroup>
-            )
-          </Map>
-        )}
-      </div>
+  return (
+    <>
+      {latitude && longitude && viewport ? (
+        <>
+          <Post
+            server={server}
+            trig={trigRender}
+            coords={[latitude, longitude]}
+          />
+          <div className="mapwrapper">
+            {results && (
+              <Map
+                maxZoom={19}
+                className="markercluster-map"
+                viewport={viewport}
+              >
+                <TileLayer
+                  attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Marker position={[latitude, longitude]} icon={green}></Marker>
+                <MarkerClusterGroup>
+                  {results.map((ev, ind) => (
+                    <AudChatRetrieve server={server} key={ind} ev={ev} />
+                  ))}
+                </MarkerClusterGroup>
+                )
+              </Map>
+            )}
+          </div>
+        </>
+      ) : (
+        "Site requires GPS to proceed, or loading gps coordinates"
+      )}
     </>
-  ) : (
-    "Site requires GPS to proceed, or loading gps coordinates"
   );
 };
 
