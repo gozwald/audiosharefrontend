@@ -1,26 +1,118 @@
-import React from "react";
+import React, { useState } from "react";
 import "./dashboard.css";
 import "semantic-ui-css/semantic.min.css";
-import { Form } from "semantic-ui-react";
+import { Form, Button, Image, Message } from "semantic-ui-react";
+import Cookies from "universal-cookie";
 
-const Dashboard = () => {
+const Dashboard = ({ server }) => {
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const successHandler = (result) => {
+    console.log(result);
+    setLoading(false);
+    setTimeout(() => setSuccess(false), 10000);
+  };
+
+  const post = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const cookies = new Cookies();
+
+    const formdata = new FormData();
+    formdata.append("audio", file);
+    formdata.append("first", e.target.first.value);
+    formdata.append("last", e.target.last.value);
+    formdata.append("bio", e.target.bio.value);
+    formdata.append("token", cookies.get("token"));
+
+    const requestOptions = {
+      method: "POST",
+      body: formdata,
+    };
+    fetch(`${server}/editprofile/`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        setSuccess(true);
+        successHandler(result, e);
+      })
+      .catch((error) => console.log("error", error));
+    e.target.reset();
+  };
+
   return (
     <div className="dashboard-container">
-      <Form size={"tiny"}>
+      <Form success={success} size={"tiny"} onSubmit={post}>
+        <div className="centerCenter">
+          <Image
+            style={{ margin: "10px" }}
+            src={
+              file
+                ? URL.createObjectURL(file)
+                : "https://react.semantic-ui.com/images/wireframe/square-image.png"
+            }
+            size="tiny"
+          />
+          <Button
+            as="label"
+            htmlFor="file"
+            type="button"
+            size="tiny"
+            compact
+            color="green"
+            style={{ margin: "10px" }}
+            content="Choose Profile Photo"
+            labelPosition="left"
+            icon="file"
+          />
+          <input
+            type="file"
+            id="file"
+            hidden
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+        </div>
         <Form.Group widths={"equal"}>
           <Form.Input
             fluid
-            id="form-subcomponent-shorthand-input-first-name"
+            name="first"
             label="First name"
             placeholder="First name"
           />
           <Form.Input
             fluid
-            id="form-subcomponent-shorthand-input-last-name"
+            name="last"
             label="Last name"
             placeholder="Last name"
           />
+          {/* <Form.Input
+            fluid
+            id="form-subcomponent-shorthand-input-email"
+            label="email"
+            placeholder="email"
+          /> */}
+          <Form.TextArea
+            name="bio"
+            label="bio"
+            placeholder="Tell the world a bit about you..."
+          />
         </Form.Group>
+        <div className="centerCenter">
+          <Button.Group>
+            <Button loading={loading} type="submit" positive>
+              Update
+            </Button>
+          </Button.Group>
+        </div>
+        <Message
+          style={{ marginTop: "10px" }}
+          success
+          size="small"
+          attached="bottom"
+        >
+          Profile Updated!
+        </Message>
       </Form>
     </div>
   );

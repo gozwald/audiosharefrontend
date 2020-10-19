@@ -83,7 +83,7 @@ const FindPosts = ({ server }) => {
     <>
       {latitude && longitude && viewport ? (
         <>
-          <Dashboard />
+          <Dashboard server={server} />
           <Post
             server={server}
             trig={trigRender}
