@@ -50,7 +50,7 @@ const Post = ({ coords, trig, server }) => {
           <div>
             <audio
               style={{ width: "200px", height: "30px", margin: "10px" }}
-              src={window.URL.createObjectURL(blob)}
+              src={URL.createObjectURL(blob)}
               controls
               preload={"metadata"}
             />

@@ -13,6 +13,7 @@ import mylocation from "./images/mylocation.png";
 import Post from "./post";
 import "./mic.css";
 import Cookies from "universal-cookie";
+import Dashboard from "./dashboard";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -78,14 +79,11 @@ const FindPosts = ({ server }) => {
     }
   }, [latitude, longitude, viewport, triggerRender, server, cookies]);
 
-  // {!loggedin && <Redirect to="/" />}
-  // "Site requires GPS to proceed, or loading gps coordinates"
-  // latitude && longitude && viewport
-
   return (
     <>
       {latitude && longitude && viewport ? (
         <>
+          <Dashboard />
           <Post
             server={server}
             trig={trigRender}
