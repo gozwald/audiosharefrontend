@@ -16,10 +16,10 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const socket = socketIOClient("http://localhost:3000", { autoConnect: false });
-// const socket = socketIOClient("https://audiosharebackend.herokuapp.com", {
-//   autoConnect: false,
-// });
+// const socket = socketIOClient("http://localhost:3000", { autoConnect: false });
+const socket = socketIOClient("https://audiosharebackend.herokuapp.com", {
+  autoConnect: false,
+});
 
 const AudChatRetrieve = ({ ev, server }) => {
   const cookies = new Cookies();
