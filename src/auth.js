@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import Cookies from "universal-cookie";
 
-const Auth = ({ setLoggedIn }) => {
+const Auth = ({ setLoggedIn, setRender }) => {
   const server = "http://localhost:3000";
 
   useEffect(() => {
     const cookies = new Cookies();
-    cookies.get("token") &&
+    if (cookies.get("token")) {
       fetch(`${server}/cookieauth/`, {
         method: "POST",
         headers: {
@@ -18,17 +18,22 @@ const Auth = ({ setLoggedIn }) => {
           if (response.status === 200) {
             return response.json();
           } else {
+            setRender(true);
             throw new Error("invalid token");
           }
         })
         .then((data) => {
           setLoggedIn(true);
+          setRender(true);
           console.log(data);
         })
         .catch((error) => {
           console.error("Error:", error);
         });
-  }, [setLoggedIn]);
+    } else {
+      setRender(true);
+    }
+  }, [setLoggedIn, setRender]);
 
   return <></>;
 };
