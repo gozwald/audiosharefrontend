@@ -39,9 +39,16 @@ const Router = () => {
             </Route>
             <Route exact path="/">
               {!loggedIn ? (
-                <Login server={server} />
+                <Login setLoggedIn={setLoggedIn} server={server} />
               ) : (
-                <Redirect to="/findposts/" />
+                <>
+                  <Auth
+                    setuserdata={setuserData}
+                    setRender={setRender}
+                    setLoggedIn={setLoggedIn}
+                  />
+                  <Redirect to="/findposts/" />
+                </>
               )}
             </Route>
           </Switch>
