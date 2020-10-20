@@ -4,13 +4,14 @@ import "semantic-ui-css/semantic.min.css";
 import { Form, Button, Image, Message } from "semantic-ui-react";
 import Cookies from "universal-cookie";
 
-const Dashboard = ({ server }) => {
+const Dashboard = ({ server, userdata }) => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [user, setuser] = useState(userdata);
 
   const successHandler = (result) => {
-    console.log(result);
+    setuser(result);
     setLoading(false);
     setTimeout(() => setSuccess(false), 10000);
   };
@@ -50,7 +51,9 @@ const Dashboard = ({ server }) => {
             src={
               file
                 ? URL.createObjectURL(file)
-                : "https://react.semantic-ui.com/images/wireframe/square-image.png"
+                : user.pic
+                ? user.pic
+                : "https://react.semantic-ui.com/images/wireframe/image.png"
             }
             size="tiny"
           />
@@ -78,13 +81,13 @@ const Dashboard = ({ server }) => {
             fluid
             name="first"
             label="First name"
-            placeholder="First name"
+            placeholder={user.first}
           />
           <Form.Input
             fluid
             name="last"
             label="Last name"
-            placeholder="Last name"
+            placeholder={user.last}
           />
           {/* <Form.Input
             fluid
@@ -92,11 +95,7 @@ const Dashboard = ({ server }) => {
             label="email"
             placeholder="email"
           /> */}
-          <Form.TextArea
-            name="bio"
-            label="bio"
-            placeholder="Tell the world a bit about you..."
-          />
+          <Form.TextArea name="bio" label="bio" placeholder={user.bio} />
         </Form.Group>
         <div className="centerCenter">
           <Button.Group>

@@ -11,10 +11,15 @@ const server = "http://localhost:3000";
 const Router = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [render, setRender] = useState(false);
+  const [userData, setuserData] = useState(null);
 
   return (
     <BrowserRouter>
-      <Auth setRender={setRender} setLoggedIn={setLoggedIn} />
+      <Auth
+        setuserdata={setuserData}
+        setRender={setRender}
+        setLoggedIn={setLoggedIn}
+      />
       {render && (
         <Switch>
           <Route path="/register/">
@@ -25,11 +30,19 @@ const Router = () => {
             )}
           </Route>
           <Route path="/findposts/">
-            {loggedIn ? <FindPosts server={server} /> : <Redirect to="/" />}
+            {loggedIn ? (
+              <FindPosts
+                setrender={setRender}
+                userdata={userData}
+                server={server}
+              />
+            ) : (
+              <Redirect to="/" />
+            )}
           </Route>
           <Route exact path="/">
             {!loggedIn ? (
-              <Login setLoggedIn={setLoggedIn} server={server} />
+              <Login server={server} />
             ) : (
               <Redirect to="/findposts/" />
             )}
