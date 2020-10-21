@@ -3,7 +3,7 @@ import "./register.css";
 import Cookies from "universal-cookie";
 import { Link } from "react-router-dom";
 
-const Login = ({ server, setLoggedIn }) => {
+const Login = ({ server }) => {
   const submit = (e) => {
     e.preventDefault();
     const data = {
