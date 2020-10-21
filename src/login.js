@@ -34,7 +34,7 @@ const Login = ({ server, setLoggedIn }) => {
       .then((data) => {
         const cookies = new Cookies();
         cookies.set("token", data, { path: "/" });
-        setLoggedIn(true);
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Error:", error);

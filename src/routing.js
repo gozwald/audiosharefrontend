@@ -43,12 +43,6 @@ const Router = () => {
                 <Login setLoggedIn={setLoggedIn} server={server} />
               ) : (
                 <>
-                  <Auth
-                    server={server}
-                    setuserdata={setuserData}
-                    setRender={setRender}
-                    setLoggedIn={setLoggedIn}
-                  />
                   <Redirect to="/findposts/" />
                 </>
               )}
