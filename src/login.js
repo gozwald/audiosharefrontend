@@ -3,7 +3,7 @@ import "./register.css";
 import Cookies from "universal-cookie";
 import { Link } from "react-router-dom";
 
-const Login = ({ server }) => {
+const Login = ({ server, setrender }) => {
   const submit = (e) => {
     e.preventDefault();
     const data = {
@@ -34,7 +34,7 @@ const Login = ({ server }) => {
       .then((data) => {
         const cookies = new Cookies();
         cookies.set("token", data, { path: "/" });
-        window.location.reload();
+        setrender(false);
       })
       .catch((error) => {
         console.error("Error:", error);

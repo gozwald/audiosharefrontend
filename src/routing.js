@@ -14,43 +14,42 @@ const Router = () => {
   const [userData, setuserData] = useState(null);
 
   return (
-    <>
+    <BrowserRouter>
       <Auth
+        render={render}
         server={server}
         setuserdata={setuserData}
         setRender={setRender}
         setLoggedIn={setLoggedIn}
       />
-      <BrowserRouter>
-        {render && (
-          <Switch>
-            <Route path="/register/">
-              {!loggedIn ? (
-                <Register server={server} />
-              ) : (
+      {render && (
+        <Switch>
+          <Route path="/register/">
+            {!loggedIn ? (
+              <Register server={server} />
+            ) : (
+              <Redirect to="/findposts/" />
+            )}
+          </Route>
+          <Route path="/findposts/">
+            {loggedIn ? (
+              <FindPosts userdata={userData} server={server} />
+            ) : (
+              <Redirect to="/" />
+            )}
+          </Route>
+          <Route exact path="/">
+            {!loggedIn ? (
+              <Login setrender={setRender} server={server} />
+            ) : (
+              <>
                 <Redirect to="/findposts/" />
-              )}
-            </Route>
-            <Route path="/findposts/">
-              {loggedIn ? (
-                <FindPosts userdata={userData} server={server} />
-              ) : (
-                <Redirect to="/" />
-              )}
-            </Route>
-            <Route exact path="/">
-              {!loggedIn ? (
-                <Login setLoggedIn={setLoggedIn} server={server} />
-              ) : (
-                <>
-                  <Redirect to="/findposts/" />
-                </>
-              )}
-            </Route>
-          </Switch>
-        )}
-      </BrowserRouter>
-    </>
+              </>
+            )}
+          </Route>
+        </Switch>
+      )}
+    </BrowserRouter>
   );
 };
 
