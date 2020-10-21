@@ -4,14 +4,13 @@ import "semantic-ui-css/semantic.min.css";
 import { Form, Button, Image, Message } from "semantic-ui-react";
 import Cookies from "universal-cookie";
 
-const ProfileEdit = ({ server, userdata }) => {
+const ProfileEdit = ({ server, userdata, setuserdata }) => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [user, setuser] = useState(userdata);
 
   const successHandler = (result) => {
-    setuser(result);
+    setuserdata(result);
     setLoading(false);
     setTimeout(() => setSuccess(false), 10000);
   };
@@ -50,8 +49,8 @@ const ProfileEdit = ({ server, userdata }) => {
           src={
             file
               ? URL.createObjectURL(file)
-              : user.pic
-              ? user.pic
+              : userdata.pic
+              ? userdata.pic
               : "https://react.semantic-ui.com/images/wireframe/image.png"
           }
           size="tiny"
@@ -80,13 +79,13 @@ const ProfileEdit = ({ server, userdata }) => {
           fluid
           name="first"
           label="First name"
-          placeholder={user.first}
+          placeholder={userdata.first}
         />
         <Form.Input
           fluid
           name="last"
           label="Last name"
-          placeholder={user.last}
+          placeholder={userdata.last}
         />
         {/* <Form.Input
             fluid
@@ -98,7 +97,9 @@ const ProfileEdit = ({ server, userdata }) => {
           name="bio"
           label="bio"
           placeholder={
-            user.bio ? user.bio : "Put something awesome about you here!"
+            userdata.bio
+              ? userdata.bio
+              : "Put something awesome about you here!"
           }
         />
       </Form.Group>

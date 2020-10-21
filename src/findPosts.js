@@ -31,7 +31,7 @@ const green = L.icon({
   popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
 });
 
-const FindPosts = ({ server, userdata }) => {
+const FindPosts = ({ server, userdata, setuserdata }) => {
   const cookies = new Cookies();
   const watch = false;
   const { latitude, longitude } = usePosition(watch);
@@ -83,7 +83,11 @@ const FindPosts = ({ server, userdata }) => {
     <>
       {latitude && longitude && viewport ? (
         <>
-          <Dashboard userdata={userdata} server={server} />
+          <Dashboard
+            setuserdata={setuserdata}
+            userdata={userdata}
+            server={server}
+          />
           <Post
             server={server}
             trig={trigRender}

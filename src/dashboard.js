@@ -5,7 +5,7 @@ import { Icon, Menu, Image } from "semantic-ui-react";
 import ProfileEdit from "./profileedit";
 import { Collapse } from "react-collapse";
 
-const Dashboard = ({ server, userdata }) => {
+const Dashboard = ({ server, userdata, setuserdata }) => {
   const handleItemClick = (e, { name }) => {
     activeItem !== name ? setActiveItem(name) : setActiveItem("");
   };
@@ -38,7 +38,7 @@ const Dashboard = ({ server, userdata }) => {
         </Menu>
       </div>
       <Collapse name="setting" isOpened={activeItem === "setting"}>
-        <ProfileEdit server={server} userdata={userdata} />
+        <ProfileEdit server={server} userdata={userdata} setuserdata={setuserdata} />
       </Collapse>
     </div>
   );

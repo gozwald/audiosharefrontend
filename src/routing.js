@@ -33,7 +33,11 @@ const Router = () => {
           </Route>
           <Route path="/findposts/">
             {loggedIn ? (
-              <FindPosts userdata={userData} server={server} />
+              <FindPosts
+                setuserdata={setuserData}
+                userdata={userData}
+                server={server}
+              />
             ) : (
               <Redirect to="/" />
             )}
