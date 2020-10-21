@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
 import Cookies from "universal-cookie";
 
-const Auth = ({ setLoggedIn, setRender, setuserdata }) => {
-  const server = "http://localhost:3000";
-
+const Auth = ({ setLoggedIn, setRender, setuserdata, server }) => {
   useEffect(() => {
     const cookies = new Cookies();
     if (cookies.get("token")) {
@@ -33,7 +31,7 @@ const Auth = ({ setLoggedIn, setRender, setuserdata }) => {
     } else {
       setRender(true);
     }
-  }, [setLoggedIn, setRender, setuserdata]);
+  }, [setLoggedIn, setRender, setuserdata, server]);
 
   return <></>;
 };

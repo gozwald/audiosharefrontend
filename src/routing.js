@@ -16,6 +16,7 @@ const Router = () => {
   return (
     <>
       <Auth
+        server={server}
         setuserdata={setuserData}
         setRender={setRender}
         setLoggedIn={setLoggedIn}
@@ -43,6 +44,7 @@ const Router = () => {
               ) : (
                 <>
                   <Auth
+                    server={server}
                     setuserdata={setuserData}
                     setRender={setRender}
                     setLoggedIn={setLoggedIn}
