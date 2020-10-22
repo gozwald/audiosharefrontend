@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import socketIOClient from "socket.io-client";
 import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -8,6 +7,7 @@ import "react-leaflet-markercluster/dist/styles.min.css";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import Cookies from "universal-cookie";
+import socket from "./socket";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -83,13 +83,7 @@ const AudChatRetrieve = ({ ev, server }) => {
   };
 
   useEffect(() => {
-    const socket = socketIOClient(server);
-    socket.on(ev._id, (e) => {
-      getChats(ev._id);
-    });
-
     return () => socket.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -98,9 +92,13 @@ const AudChatRetrieve = ({ ev, server }) => {
         <Popup
           autoPan={false}
           onClose={() => {
+            socket.off(ev._id);
             setOpen(false);
           }}
           onOpen={() => {
+            socket.on(ev._id, (e) => {
+              getChats(ev._id);
+            });
             getChats(ev._id);
             setOpen(true);
           }}
