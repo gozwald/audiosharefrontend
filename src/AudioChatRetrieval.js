@@ -16,11 +16,6 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-// const socket = socketIOClient("http://localhost:3000", { autoConnect: false });
-const socket = socketIOClient("https://audiosharebackend.herokuapp.com", {
-  autoConnect: false,
-});
-
 const AudChatRetrieve = ({ ev, server }) => {
   const cookies = new Cookies();
   const [value, setValue] = useState("");
@@ -81,17 +76,21 @@ const AudChatRetrieve = ({ ev, server }) => {
     };
     fetch(`${server}/getchats/`, requestOptions)
       .then((response) => response.json())
-      .then((result) => setChatList(result.chats))
+      .then((result) => {
+        setChatList(result.chats);
+      })
       .catch((error) => console.log("error", error));
   };
 
   useEffect(() => {
-    open && socket.connect();
-    socket.on(ev._id, () => {
+    const socket = socketIOClient(server);
+    socket.on(ev._id, (e) => {
       getChats(ev._id);
     });
+
+    return () => socket.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, ev._id]);
+  }, []);
 
   return (
     <>
@@ -99,7 +98,6 @@ const AudChatRetrieve = ({ ev, server }) => {
         <Popup
           autoPan={false}
           onClose={() => {
-            socket.disconnect();
             setOpen(false);
           }}
           onOpen={() => {
