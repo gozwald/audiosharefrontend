@@ -47,37 +47,41 @@ const ChatModule = ({ setChatList, server, ev, chatList }) => {
 
   return (
     <>
-      <Comment.Group size="tiny">
-        {chatList &&
-          chatList.map((e, ind) => (
-            <div key={ind}>
-              <Comment>
-                <Comment.Avatar as="a" src={e.user.pic} />
-                <Comment.Content>
-                  <Comment.Author as="a">{e.user.first}</Comment.Author>
-                  <Comment.Metadata>
-                    <span>
-                      {formatDistanceToNow(new Date(e.createdAt), {
-                        addSuffix: true,
-                      })}
-                    </span>
-                  </Comment.Metadata>
-                  <Comment.Text>{e.message}</Comment.Text>
-                </Comment.Content>
-              </Comment>
-            </div>
-          ))}
-      </Comment.Group>
-      <Form reply onSubmit={(e) => handleSubmit(ev, e)}>
-        <Form.TextArea rows={2} value={value} onChange={handleChange} />
-        <Button
-          type="submit"
-          content="Add Reply"
-          labelPosition="left"
-          icon="edit"
-          primary
-        />
-      </Form>
+      <div className={"chatContainer"}>
+        <Comment.Group size="tiny">
+          {chatList &&
+            chatList.map((e, ind) => (
+              <div key={ind}>
+                <Comment>
+                  <Comment.Avatar as="a" src={e.user.pic} />
+                  <Comment.Content>
+                    <Comment.Author as="a">{e.user.first}</Comment.Author>
+                    <Comment.Metadata>
+                      <span>
+                        {formatDistanceToNow(new Date(e.createdAt), {
+                          addSuffix: true,
+                        })}
+                      </span>
+                    </Comment.Metadata>
+                    <Comment.Text>{e.message}</Comment.Text>
+                  </Comment.Content>
+                </Comment>
+              </div>
+            ))}
+        </Comment.Group>
+      </div>
+      <div className={"replyContainer"}>
+        <Form reply onSubmit={(e) => handleSubmit(ev, e)}>
+          <Form.TextArea rows={1} value={value} onChange={handleChange} />
+          <Button
+            type="submit"
+            content="Add Reply"
+            labelPosition="left"
+            icon="edit"
+            primary
+          />
+        </Form>
+      </div>
     </>
   );
 };

@@ -70,6 +70,22 @@ body {
   z-index: 1;
 }
 
-.popup {
-  background-color: rgba(255, 0, 0, 0.4);
+/* .popup {
+  max-height: 400px;
+} */
+
+.chatContainer {
+  max-height: 200px;
+  overflow: auto;
+  overflow-x: hidden;
 }
+
+/* .repyContainer {
+  overflow: auto;
+  overflow-x: hidden;
+} */
+
+/* .audContainer {
+  position: sticky;
+  top: 0;
+} */

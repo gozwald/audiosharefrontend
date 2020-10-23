@@ -53,7 +53,6 @@ const AudChatRetrieve = ({ ev, server }) => {
     <>
       <Marker position={ev.location.coordinates}>
         <Popup
-          className={"popup"}
           autoPan={false}
           onClose={() => {
             socket.off(ev._id);
@@ -69,13 +68,17 @@ const AudChatRetrieve = ({ ev, server }) => {
         >
           {open ? (
             <>
-              <audio src={ev.audioContent} controls preload={"metadata"} />
-              <ChatModule
-                setChatList={setChatList}
-                server={server}
-                ev={ev}
-                chatList={chatList}
-              />
+              <div className={"popup"}>
+                <div className={"audContainer"}>
+                  <audio src={ev.audioContent} controls preload={"metadata"} />
+                </div>
+                <ChatModule
+                  setChatList={setChatList}
+                  server={server}
+                  ev={ev}
+                  chatList={chatList}
+                />
+              </div>
             </>
           ) : (
             "loading"
