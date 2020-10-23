@@ -8,6 +8,7 @@ import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import Cookies from "universal-cookie";
 import socket from "./socket";
+import ChatModule from "./chatmodule";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -18,31 +19,16 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 const AudChatRetrieve = ({ ev, server }) => {
   const cookies = new Cookies();
-  const [value, setValue] = useState("");
   const [chatList, setChatList] = useState(null);
   const [open, setOpen] = useState(false);
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
-
-  const handleSubmit = (ev, e) => {
-    e.preventDefault();
-    if (value) {
-      post(ev._id);
-      setValue("");
-    } else {
-      alert("type something dammit!");
-    }
-  };
-
-  const post = (newPost) => {
+  const post = (userid, content) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     const raw = JSON.stringify({
-      id: newPost,
-      message: value,
+      id: userid,
+      message: content,
       token: cookies.get("token"),
     });
 
@@ -83,6 +69,7 @@ const AudChatRetrieve = ({ ev, server }) => {
   };
 
   useEffect(() => {
+    // console.log(chatList);
     return () => socket.disconnect();
   }, []);
 
@@ -90,6 +77,7 @@ const AudChatRetrieve = ({ ev, server }) => {
     <>
       <Marker position={ev.location.coordinates}>
         <Popup
+          // className={"popup"}
           autoPan={false}
           onClose={() => {
             socket.off(ev._id);
@@ -106,15 +94,7 @@ const AudChatRetrieve = ({ ev, server }) => {
           {open ? (
             <>
               <audio src={ev.audioContent} controls preload={"metadata"} />
-              {chatList &&
-                chatList.map((e, ind) => <div key={ind}>{e.message}</div>)}
-              <form onSubmit={(e) => handleSubmit(ev, e)}>
-                <label>
-                  Respond!
-                  <input type="text" value={value} onChange={handleChange} />
-                </label>
-                <input type="submit" value="Go!" />
-              </form>
+              <ChatModule ev={ev} chatList={chatList} post={post} />
             </>
           ) : (
             "loading"

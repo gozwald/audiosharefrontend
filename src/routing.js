@@ -5,8 +5,8 @@ import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import FindPosts from "./findPosts";
 import Auth from "./auth";
 
-const server = "https://audiosharebackend.herokuapp.com";
-// const server = "http://localhost:3000";
+// const server = "https://audiosharebackend.herokuapp.com";
+const server = "http://localhost:3000";
 
 const Router = () => {
   const [loggedIn, setLoggedIn] = useState(false);
