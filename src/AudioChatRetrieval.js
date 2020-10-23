@@ -22,29 +22,6 @@ const AudChatRetrieve = ({ ev, server }) => {
   const [chatList, setChatList] = useState(null);
   const [open, setOpen] = useState(false);
 
-  const post = (userid, content) => {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    const raw = JSON.stringify({
-      id: userid,
-      message: content,
-      token: cookies.get("token"),
-    });
-
-    const requestOptions = {
-      method: "PUT",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
-
-    fetch(`${server}/chatpost/`, requestOptions)
-      .then((response) => response.json())
-      .then((result) => setChatList(result.chats))
-      .catch((error) => console.log("error", error));
-  };
-
   const getChats = (id) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -69,7 +46,6 @@ const AudChatRetrieve = ({ ev, server }) => {
   };
 
   useEffect(() => {
-    // console.log(chatList);
     return () => socket.disconnect();
   }, []);
 
@@ -77,7 +53,7 @@ const AudChatRetrieve = ({ ev, server }) => {
     <>
       <Marker position={ev.location.coordinates}>
         <Popup
-          // className={"popup"}
+          className={"popup"}
           autoPan={false}
           onClose={() => {
             socket.off(ev._id);
@@ -94,7 +70,12 @@ const AudChatRetrieve = ({ ev, server }) => {
           {open ? (
             <>
               <audio src={ev.audioContent} controls preload={"metadata"} />
-              <ChatModule ev={ev} chatList={chatList} post={post} />
+              <ChatModule
+                setChatList={setChatList}
+                server={server}
+                ev={ev}
+                chatList={chatList}
+              />
             </>
           ) : (
             "loading"

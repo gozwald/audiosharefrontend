@@ -2,9 +2,34 @@ import React, { useState } from "react";
 import "./App.css";
 import { Comment, Form, Button } from "semantic-ui-react";
 import { formatDistanceToNow } from "date-fns";
+import Cookies from "universal-cookie";
 
-const ChatModule = ({ ev, post, chatList }) => {
+const ChatModule = ({ setChatList, server, ev, chatList }) => {
   const [value, setValue] = useState("");
+
+  const post = (userid, content) => {
+    const cookies = new Cookies();
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+      id: userid,
+      message: content,
+      token: cookies.get("token"),
+    });
+
+    const requestOptions = {
+      method: "PUT",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${server}/chatpost/`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => setChatList(result.chats))
+      .catch((error) => console.log("error", error));
+  };
 
   const handleChange = (event) => {
     setValue(event.target.value);
