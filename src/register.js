@@ -1,11 +1,20 @@
 import React, { useState } from "react";
 import "./register.css";
 import { Link } from "react-router-dom";
-import TransitionsModal from "./modal";
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Image,
+  Message,
+  Segment,
+} from "semantic-ui-react";
+import logo from "./images/logo.png";
 
 const Register = ({ server }) => {
   const [registered, setRegistered] = useState(null);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
 
   const submit = (e) => {
     e.preventDefault();
@@ -23,11 +32,20 @@ const Register = ({ server }) => {
       },
       body: JSON.stringify(data),
     })
-      .then((response) =>
-        response.status === 200 ? response.json() : setError(true)
-      )
-      .then((data) => {
-        setRegistered(data);
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json().then((data) => {
+            setRegistered(data);
+          });
+        }
+        if (response.status === 400) {
+          return response.json().then((data) => {
+            setError(data);
+          });
+        } else {
+          setError(true);
+          throw new Error();
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -36,52 +54,87 @@ const Register = ({ server }) => {
 
   return (
     <div>
-      {error && <TransitionsModal />}
-      {registered && <TransitionsModal details={registered} />}
-      <div className="main">
-        <p className="sign" align="center">
-          Sign Up
-        </p>
-        <form onSubmit={submit} className="form1">
-          <input
-            name="first"
-            className="un"
-            type="text"
-            align="center"
-            placeholder="First Name"
-            required
-          />
-          <input
-            name="last"
-            className="un"
-            type="text"
-            align="center"
-            placeholder="Last Name"
-            required
-          />
-          <input
-            name="email"
-            className="un"
-            type="email"
-            align="center"
-            placeholder="email"
-            required
-          />
-          <input
-            name="password"
-            className="pass"
-            type="password"
-            align="center"
-            placeholder="Password"
-            required
-          />
-          <input className="submit" align="center" type="submit" />
-
-          <p className="forgot" align="center">
-            <Link to="/">Sign in here!</Link>
-          </p>
-        </form>
-      </div>
+      <Grid
+        textAlign="center"
+        style={{ height: "100vh" }}
+        verticalAlign="middle"
+      >
+        <Grid.Column style={{ maxWidth: 450 }}>
+          <Header as="h2" color="green" textAlign="center">
+            <Image src={logo} />
+            Register a new account!
+          </Header>
+          <Form
+            onClick={() => {
+              if (error || registered) {
+                setError(null);
+                setRegistered(null);
+              }
+            }}
+            error={error ? true : false}
+            success={registered ? true : false}
+            onSubmit={submit}
+            size="large"
+          >
+            <Segment stacked>
+              <Form.Group widths="equal">
+                <Form.Input
+                  name="first"
+                  fluid
+                  icon="user"
+                  iconPosition="left"
+                  id="form-subcomponent-shorthand-input-first-name"
+                  placeholder="First name"
+                  required
+                />
+                <Form.Input
+                  name="last"
+                  fluid
+                  icon="user"
+                  iconPosition="left"
+                  id="form-subcomponent-shorthand-input-last-name"
+                  placeholder="Last name"
+                  required
+                />
+              </Form.Group>
+              <Form.Input
+                type="email"
+                name="email"
+                fluid
+                icon="smile"
+                iconPosition="left"
+                placeholder="E-mail address"
+                required
+              />
+              <Form.Input
+                name="password"
+                fluid
+                icon="lock"
+                iconPosition="left"
+                placeholder="Password"
+                type="password"
+                required
+              />
+              <Message
+                error
+                header="Oh No! There is a problem."
+                content={error && error}
+              />
+              <Message
+                success
+                header="Success!"
+                content={registered && registered}
+              />
+              <Button type="submit" color="green" fluid size="large">
+                Register
+              </Button>
+            </Segment>
+          </Form>
+          <Message>
+            Already registered? <Link to="/">Sign in!</Link>
+          </Message>
+        </Grid.Column>
+      </Grid>
     </div>
   );
 };

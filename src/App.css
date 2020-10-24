@@ -75,7 +75,7 @@ body {
 } */
 
 .chatContainer {
-  max-height: 200px;
+  height: 200px;
   overflow: auto;
   overflow-x: hidden;
 }
@@ -85,7 +85,6 @@ body {
   overflow-x: hidden;
 } */
 
-/* .audContainer {
-  position: sticky;
-  top: 0;
-} */
+.audContainer {
+  padding-bottom: 7px;
+}

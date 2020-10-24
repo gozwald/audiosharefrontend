@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import { Comment } from "semantic-ui-react";
 import Cookies from "universal-cookie";
@@ -9,6 +9,13 @@ import ReplyModule from "./replymodule";
 const ChatModule = ({ server, ev }) => {
   const cookies = new Cookies();
   const [chatList, setChatList] = useState("");
+
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    messagesEndRef.current &&
+      messagesEndRef.current.scrollIntoView({ block: "end" });
+  }, [chatList]);
 
   const getChats = (id) => {
     const myHeaders = new Headers();
@@ -47,7 +54,7 @@ const ChatModule = ({ server, ev }) => {
   return (
     <>
       <div className={"chatContainer"}>
-        <Comment.Group size="tiny">
+        <Comment.Group size="tiny" style={{ marginBottom: "0px" }}>
           {chatList &&
             chatList.map((e, ind) => (
               <div key={ind}>
@@ -55,6 +62,7 @@ const ChatModule = ({ server, ev }) => {
               </div>
             ))}
         </Comment.Group>
+        <div ref={messagesEndRef} />
       </div>
       <div className={"replyContainer"}>
         <ReplyModule ev={ev} setChatList={setChatList} server={server} />

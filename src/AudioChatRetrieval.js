@@ -48,7 +48,7 @@ const AudChatRetrieve = ({ ev, server }) => {
                             })}
                           </span>
                         </Comment.Metadata>
-                        <Comment.Text>{ev.message}</Comment.Text>
+                        <Comment.Text></Comment.Text>
                       </Comment.Content>
                     </Comment>
                   </Comment.Group>
