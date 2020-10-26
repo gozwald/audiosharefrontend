@@ -3,7 +3,7 @@ import "./App.css";
 import { Form, Button } from "semantic-ui-react";
 import Cookies from "universal-cookie";
 
-const ReplyModule = ({ server, ev, setChatList }) => {
+const ReplyModule = ({ server, postData }) => {
   const [value, setValue] = useState("");
 
   const post = (userid, content) => {
@@ -24,20 +24,19 @@ const ReplyModule = ({ server, ev, setChatList }) => {
       redirect: "follow",
     };
 
-    fetch(`${server}/chatpost/`, requestOptions)
-      .then((response) => response.json())
-      .then((result) => console.log(result.chats))
-      .catch((error) => console.log("error", error));
+    fetch(`${server}/chatpost/`, requestOptions).catch((error) =>
+      console.log("error", error)
+    );
   };
 
   const handleChange = (event) => {
     setValue(event.target.value);
   };
 
-  const handleSubmit = (ev, e) => {
+  const handleSubmit = (postData, e) => {
     e.preventDefault();
     if (value) {
-      post(ev._id, value);
+      post(postData, value);
       setValue("");
     } else {
       alert("type something dammit!");
@@ -47,7 +46,7 @@ const ReplyModule = ({ server, ev, setChatList }) => {
   return (
     <>
       <div className={"replyContainer"}>
-        <Form reply onSubmit={(e) => handleSubmit(ev, e)}>
+        <Form reply onSubmit={(e) => handleSubmit(postData, e)}>
           <Form.TextArea rows={1} value={value} onChange={handleChange} />
           <Button
             type="submit"

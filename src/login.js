@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./register.css";
 import Cookies from "universal-cookie";
 import { Link } from "react-router-dom";
 import {

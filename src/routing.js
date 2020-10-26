@@ -6,8 +6,8 @@ import FindPosts from "./findPosts";
 import Auth from "./auth";
 import socket from "./socket";
 
-const server = "https://audiosharebackend.herokuapp.com";
-// const server = "http://localhost:3000";
+// const server = "https://audiosharebackend.herokuapp.com";
+const server = "http://localhost:3000";
 
 const Router = () => {
   const [loggedIn, setLoggedIn] = useState(false);
