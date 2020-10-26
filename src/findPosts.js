@@ -107,7 +107,7 @@ const FindPosts = ({ server, userdata, setuserdata }) => {
                 <Marker position={[latitude, longitude]} icon={green}></Marker>
                 <MarkerClusterGroup>
                   {results.map((ev, ind) => (
-                    <AudChatRetrieve server={server} key={ind} ev={ev} />
+                    <AudChatRetrieve userdata={userdata} server={server} key={ind} ev={ev} />
                   ))}
                 </MarkerClusterGroup>
                 )

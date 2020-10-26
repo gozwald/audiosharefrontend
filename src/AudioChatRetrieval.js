@@ -19,7 +19,7 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const AudChatRetrieve = ({ ev, server }) => {
+const AudChatRetrieve = ({ ev, server, userdata }) => {
   const [postData, setPostData] = useState();
 
   const handleClickLike = (postid) => {
@@ -63,6 +63,7 @@ const AudChatRetrieve = ({ ev, server }) => {
     fetch(`${server}/getchats/`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
+        console.log(result);
         setPostData(result);
       })
       .catch((error) => console.log("error", error));
@@ -124,12 +125,24 @@ const AudChatRetrieve = ({ ev, server }) => {
                     <Grid divided>
                       <Grid.Row columns={2}>
                         <Grid.Column>
-                          <Icon
-                            onClick={() => handleClickLike(postData)}
-                            link
-                            name="thumbs up outline"
-                          />
-                          Like
+                          {postData.react.length &&
+                          postData.react.find(
+                            (e) => e.user._id === userdata._id
+                          ) ? (
+                            <>
+                              <Icon color="green" name="thumbs up outline" />
+                              You Liked this
+                            </>
+                          ) : (
+                            <>
+                              <Icon
+                                onClick={() => handleClickLike(postData)}
+                                link
+                                name="thumbs up outline"
+                              />
+                              Like
+                            </>
+                          )}
                         </Grid.Column>
                         <Grid.Column>
                           <Icon name="share alternate" />
