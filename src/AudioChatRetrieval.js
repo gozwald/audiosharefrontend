@@ -130,7 +130,12 @@ const AudChatRetrieve = ({ ev, server, userdata }) => {
                             (e) => e.user._id === userdata._id
                           ) ? (
                             <>
-                              <Icon color="green" name="thumbs up outline" />
+                              <Icon
+                                link
+                                color="green"
+                                name="thumbs up outline"
+                                onClick={() => handleClickLike(postData)}
+                              />
                               You Liked this
                             </>
                           ) : (
