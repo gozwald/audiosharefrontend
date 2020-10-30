@@ -38,7 +38,11 @@ const Dashboard = ({ server, userdata, setuserdata }) => {
         </Menu>
       </div>
       <Collapse name="setting" isOpened={activeItem === "setting"}>
-        <ProfileEdit server={server} userdata={userdata} setuserdata={setuserdata} />
+        <ProfileEdit
+          server={server}
+          userdata={userdata}
+          setuserdata={setuserdata}
+        />
       </Collapse>
     </div>
   );

@@ -19,7 +19,7 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const AudChatRetrieve = ({ ev, server, userdata }) => {
+const AudChatRetrieve = ({ ev, server, userdata, setviewport }) => {
   const [postData, setPostData] = useState();
 
   const handleClickLike = (postid) => {
@@ -73,8 +73,12 @@ const AudChatRetrieve = ({ ev, server, userdata }) => {
     <>
       <Marker position={ev.location.coordinates}>
         <Popup
-          autoPan={false}
+          autoPan
           onClose={() => {
+            setviewport({
+              center: ev.location.coordinates,
+              zoom: 15,
+            });
             socket.off(ev._id);
           }}
           onOpen={() => {

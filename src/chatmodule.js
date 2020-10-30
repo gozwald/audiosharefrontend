@@ -4,7 +4,7 @@ import { Comment } from "semantic-ui-react";
 import Conversation from "./conversation";
 import ReplyModule from "./replymodule";
 
-const ChatModule = ({ server, postData, setPostData }) => {
+const ChatModule = ({ server, postData }) => {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {

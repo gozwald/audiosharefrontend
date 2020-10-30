@@ -83,31 +83,38 @@ const FindPosts = ({ server, userdata, setuserdata }) => {
     <>
       {latitude && longitude && viewport ? (
         <>
-          <Dashboard
-            setuserdata={setuserdata}
-            userdata={userdata}
-            server={server}
-          />
-          <Post
-            server={server}
-            trig={trigRender}
-            coords={[latitude, longitude]}
-          />
           <div className="mapwrapper">
             {results && (
               <Map
                 maxZoom={19}
                 className="markercluster-map"
                 viewport={viewport}
+                zoomControl={true}
               >
                 <TileLayer
                   attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
+                <Dashboard
+                  setuserdata={setuserdata}
+                  userdata={userdata}
+                  server={server}
+                />
+                <Post
+                  server={server}
+                  trig={trigRender}
+                  coords={[latitude, longitude]}
+                />
                 <Marker position={[latitude, longitude]} icon={green}></Marker>
                 <MarkerClusterGroup>
                   {results.map((ev, ind) => (
-                    <AudChatRetrieve userdata={userdata} server={server} key={ind} ev={ev} />
+                    <AudChatRetrieve
+                      setviewport={setViewport}
+                      userdata={userdata}
+                      server={server}
+                      key={ind}
+                      ev={ev}
+                    />
                   ))}
                 </MarkerClusterGroup>
                 )
