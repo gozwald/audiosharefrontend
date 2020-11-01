@@ -1,4 +1,13 @@
 import io from "socket.io-client";
-// const socket = io("https://audiosharebackend.herokuapp.com");
-const socket = io("http://localhost:3000");
+
+const getServer = () => {
+  if (process.env.NODE_ENV === "development") {
+    return "http://localhost:3000";
+  } else {
+    return "https://audiosharebackend.herokuapp.com";
+  }
+};
+
+const socket = io(getServer());
+
 export default socket;
