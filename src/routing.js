@@ -6,59 +6,62 @@ import FindPosts from "./findPosts";
 import Auth from "./auth";
 import socket from "./socket";
 
-const server = "https://audiosharebackend.herokuapp.com";
-// const server = "http://localhost:3000";
-
 const Router = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [render, setRender] = useState(false);
   const [userData, setuserData] = useState(null);
+  const [server, setServer] = useState(null);
 
   useEffect(() => {
+    process.env.NODE_ENV === "development"
+      ? setServer("http://localhost:3000")
+      : setServer("https://audiosharebackend.herokuapp.com");
     return () => socket.disconnect();
   }, []);
 
   return (
-    <BrowserRouter>
-      <Auth
-        render={render}
-        server={server}
-        setuserdata={setuserData}
-        setRender={setRender}
-        setLoggedIn={setLoggedIn}
-      />
-      {render && (
-        <Switch>
-          <Route path="/register/">
-            {!loggedIn ? (
-              <Register server={server} />
-            ) : (
-              <Redirect to="/findposts/" />
-            )}
-          </Route>
-          <Route path="/findposts/">
-            {loggedIn ? (
-              <FindPosts
-                setuserdata={setuserData}
-                userdata={userData}
-                server={server}
-              />
-            ) : (
-              <Redirect to="/" />
-            )}
-          </Route>
-          <Route exact path="/">
-            {!loggedIn ? (
-              <Login setrender={setRender} server={server} />
-            ) : (
-              <>
+    server && (
+      <BrowserRouter>
+        <Auth
+          render={render}
+          server={server}
+          setuserdata={setuserData}
+          setRender={setRender}
+          setLoggedIn={setLoggedIn}
+        />
+        {render && (
+          <Switch>
+            <Route path="/register/">
+              {!loggedIn ? (
+                <Register server={server} />
+              ) : (
                 <Redirect to="/findposts/" />
-              </>
-            )}
-          </Route>
-        </Switch>
-      )}
-    </BrowserRouter>
+              )}
+            </Route>
+            <Route path="/findposts/">
+              {loggedIn ? (
+                <FindPosts
+                  setuserdata={setuserData}
+                  userdata={userData}
+                  server={server}
+                />
+              ) : (
+                <Redirect to="/" />
+              )}
+            </Route>
+            <Route exact path="/">
+              {!loggedIn ? (
+                <Login setrender={setRender} server={server} />
+              ) : (
+                <>
+                  <Redirect to="/findposts/" />
+                </>
+              )}
+            </Route>
+          </Switch>
+        )}
+      </BrowserRouter>
+    )
   );
 };
 
