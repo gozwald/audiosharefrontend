@@ -7,7 +7,14 @@ import "react-leaflet-markercluster/dist/styles.min.css";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import ChatModule from "./chatmodule";
-import { Comment, Feed, Icon, Grid, Modal } from "semantic-ui-react";
+import {
+  Comment,
+  Feed,
+  Icon,
+  Grid,
+  Modal,
+  TransitionablePortal,
+} from "semantic-ui-react";
 import { formatDistanceToNow } from "date-fns";
 import socket from "./socket";
 import Cookies from "universal-cookie";
@@ -90,89 +97,97 @@ const AudChatRetrieve = ({ ev, server, userdata, setviewport }) => {
   return (
     <>
       <Marker onClick={modalHandler} position={ev.location.coordinates}>
-        <Modal onClose={modalHandler} open={open}>
-          {postData && (
-            <Modal.Content>
-              <div className={"popup"}>
-                <div className={"audContainer"}>
-                  <Comment.Group size="small">
-                    <Comment>
-                      <Comment.Avatar src={postData.user.pic} />
-                      <Comment.Content>
-                        <Comment.Author as="a">
-                          {postData.user.first}
-                        </Comment.Author>
-                        <Comment.Metadata>
+        <TransitionablePortal
+          open={open}
+          transition={{ animation: "fade", duration: 400 }}
+        >
+          <Modal dimmer onClose={modalHandler} open>
+            {postData && (
+              <Modal.Content>
+                <div className={"popup"}>
+                  <div className={"audContainer"}>
+                    <Comment.Group size="small">
+                      <Comment>
+                        <Comment.Avatar src={postData.user.pic} />
+                        <Comment.Content>
+                          <Comment.Author as="a">
+                            {postData.user.first}
+                          </Comment.Author>
+                          <Comment.Metadata>
+                            <div>
+                              {formatDistanceToNow(
+                                new Date(postData.createdAt),
+                                {
+                                  addSuffix: true,
+                                }
+                              )}
+                            </div>
+                          </Comment.Metadata>
                           <div>
-                            {formatDistanceToNow(new Date(postData.createdAt), {
-                              addSuffix: true,
-                            })}
+                            <Icon color="green" name="like" disabled />
+                            {postData.react.length} Likes
+                            <Icon
+                              style={{ marginLeft: "15px" }}
+                              color="green"
+                              name="comment"
+                              disabled
+                            />{" "}
+                            {postData.chats.length} Comments
                           </div>
-                        </Comment.Metadata>
-                        <div>
-                          <Icon color="green" name="like" disabled />
-                          {postData.react.length} Likes
-                          <Icon
-                            style={{ marginLeft: "15px" }}
-                            color="green"
-                            name="comment"
-                            disabled
-                          />{" "}
-                          {postData.chats.length} Comments
-                        </div>
-                      </Comment.Content>
-                    </Comment>
-                  </Comment.Group>
-                  <audio
-                    src={postData.audioContent}
-                    controls
-                    preload={"metadata"}
+                        </Comment.Content>
+                      </Comment>
+                    </Comment.Group>
+                    <audio
+                      src={postData.audioContent}
+                      controls
+                      preload={"metadata"}
+                    />
+                    <Feed>
+                      <Grid divided>
+                        <Grid.Row columns={2}>
+                          <Grid.Column>
+                            {postData.react.length &&
+                            postData.react.find(
+                              (e) => e.user._id === userdata._id
+                            ) ? (
+                              <>
+                                <Icon
+                                  link
+                                  color="green"
+                                  name="thumbs up outline"
+                                  onClick={() => handleClickLike(postData)}
+                                />
+                                You Liked this
+                              </>
+                            ) : (
+                              <>
+                                <Icon
+                                  onClick={() => handleClickLike(postData)}
+                                  link
+                                  name="thumbs up outline"
+                                />
+                                Like
+                              </>
+                            )}
+                          </Grid.Column>
+                          <Grid.Column>
+                            <Icon name="share alternate" />
+                            Share
+                          </Grid.Column>
+                        </Grid.Row>
+                      </Grid>
+                    </Feed>
+                  </div>
+                  <ChatModule
+                    setPostData={setPostData}
+                    server={server}
+                    postData={postData}
                   />
-                  <Feed>
-                    <Grid divided>
-                      <Grid.Row columns={2}>
-                        <Grid.Column>
-                          {postData.react.length &&
-                          postData.react.find(
-                            (e) => e.user._id === userdata._id
-                          ) ? (
-                            <>
-                              <Icon
-                                link
-                                color="green"
-                                name="thumbs up outline"
-                                onClick={() => handleClickLike(postData)}
-                              />
-                              You Liked this
-                            </>
-                          ) : (
-                            <>
-                              <Icon
-                                onClick={() => handleClickLike(postData)}
-                                link
-                                name="thumbs up outline"
-                              />
-                              Like
-                            </>
-                          )}
-                        </Grid.Column>
-                        <Grid.Column>
-                          <Icon name="share alternate" />
-                          Share
-                        </Grid.Column>
-                      </Grid.Row>
-                    </Grid>
-                  </Feed>
                 </div>
-                <ChatModule
-                  setPostData={setPostData}
-                  server={server}
-                  postData={postData}
-                />
-              </div>
-            </Modal.Content>
-          )}
-        </Modal>
+              </Modal.Content>
+            )}
+          </Modal>
+        </TransitionablePortal>
       </Marker>
     </>
   );
