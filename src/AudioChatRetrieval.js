@@ -101,7 +101,7 @@ const AudChatRetrieve = ({ ev, server, userdata, setviewport }) => {
           open={open}
           transition={{ animation: "fade", duration: 400 }}
         >
-          <Modal dimmer onClose={modalHandler} open>
+          <Modal dimmer onClose={modalHandler} open={open}>
             {postData && (
               <Modal.Content>
                 <div className={"popup"}>
