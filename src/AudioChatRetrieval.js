@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import "./App.css";
-import { Marker, Popup } from "react-leaflet";
+import { Marker } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "react-leaflet-markercluster/dist/styles.min.css";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import ChatModule from "./chatmodule";
-import { Comment, Feed, Icon, Grid } from "semantic-ui-react";
+import { Comment, Feed, Icon, Grid, Modal } from "semantic-ui-react";
 import { formatDistanceToNow } from "date-fns";
 import socket from "./socket";
 import Cookies from "universal-cookie";
@@ -21,6 +21,7 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 const AudChatRetrieve = ({ ev, server, userdata, setviewport }) => {
   const [postData, setPostData] = useState();
+  const [open, setOpen] = useState(false);
 
   const handleClickLike = (postid) => {
     const cookies = new Cookies();
@@ -69,27 +70,29 @@ const AudChatRetrieve = ({ ev, server, userdata, setviewport }) => {
       .catch((error) => console.log("error", error));
   };
 
+  const modalHandler = () => {
+    if (!open) {
+      setOpen(true);
+      getChats(ev._id);
+      socket.on(ev._id, (e) => {
+        setPostData(e);
+      });
+    } else {
+      setOpen(false);
+      setviewport({
+        center: ev.location.coordinates,
+        zoom: 15,
+      });
+      socket.off(ev._id);
+    }
+  };
+
   return (
     <>
-      <Marker position={ev.location.coordinates}>
-        <Popup
-          autoPan
-          onClose={() => {
-            setviewport({
-              center: ev.location.coordinates,
-              zoom: 15,
-            });
-            socket.off(ev._id);
-          }}
-          onOpen={() => {
-            getChats(ev._id);
-            socket.on(ev._id, (e) => {
-              setPostData(e);
-            });
-          }}
-        >
+      <Marker onClick={modalHandler} position={ev.location.coordinates}>
+        <Modal onClose={modalHandler} open={open}>
           {postData && (
-            <>
+            <Modal.Content>
               <div className={"popup"}>
                 <div className={"audContainer"}>
                   <Comment.Group size="small">
@@ -167,9 +170,9 @@ const AudChatRetrieve = ({ ev, server, userdata, setviewport }) => {
                   postData={postData}
                 />
               </div>
-            </>
+            </Modal.Content>
           )}
-        </Popup>
+        </Modal>
       </Marker>
     </>
   );

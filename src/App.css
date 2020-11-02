@@ -70,9 +70,9 @@ body {
   z-index: 1000;
 }
 
-/* .popup {
-  width: 100vw;
-} */
+.popup {
+  z-index: 1000;
+}
 
 .chatContainer {
   max-height: 27vh;
