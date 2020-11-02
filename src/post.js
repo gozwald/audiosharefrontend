@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./mic.css";
 import { useVoiceRecorder } from "use-voice-recorder";
 import Cookies from "universal-cookie";
+import { Button } from "semantic-ui-react";
 
 const Post = ({ coords, trig, server }) => {
   const [blob, setBlob] = useState(null);
@@ -11,6 +12,7 @@ const Post = ({ coords, trig, server }) => {
 
   const postPost = (result) => {
     console.log(result);
+    setBlob(null);
     trig();
   };
 
@@ -45,22 +47,23 @@ const Post = ({ coords, trig, server }) => {
         <div onClick={start} className="blob"></div>
       )}
 
-      <div>
-        {blob && (
-          <div>
-            <audio
-              style={{ width: "200px", height: "30px", margin: "10px" }}
-              src={URL.createObjectURL(blob)}
-              controls
-              preload={"metadata"}
-            />
-          </div>
-        )}
-      </div>
       {blob && (
-        <button onClick={post} type="button">
-          Post
-        </button>
+        <>
+          <audio
+            style={{ width: "200px", height: "30px", margin: "10px" }}
+            src={URL.createObjectURL(blob)}
+            controls
+            preload={"metadata"}
+          />
+
+          <Button.Group>
+            <Button onClick={() => setBlob(null)}>Cancel</Button>
+            <Button.Or />
+            <Button onClick={post} positive>
+              Post
+            </Button>
+          </Button.Group>
+        </>
       )}
     </div>
   );

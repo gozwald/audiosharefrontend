@@ -8,21 +8,21 @@
   background-position: center;
   background-repeat: no-repeat;
   border-radius: 50%;
-  margin: 10px;
   height: 70px;
   width: 70px;
   transform: scale(1);
-  background-color: rgb(119, 230, 134);
+  background-color: rgb(187 232 30);
   box-shadow: 0 0 0 0 rgb(20, 148, 118);
 }
 
 .animation {
+  background-color: rgb(226 232 94);
   animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
   0% {
-    transform: scale(0.95);
+    transform: scale(0.8);
     box-shadow: 0 0 0 0 rgba(41, 182, 149, 0.7);
   }
 
@@ -32,7 +32,7 @@
   }
 
   100% {
-    transform: scale(0.95);
+    transform: scale(0.8);
     box-shadow: 0 0 0 0 rgba(51, 217, 178, 0);
   }
 }
