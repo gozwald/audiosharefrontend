@@ -41,13 +41,7 @@ const Post = ({ coords, trig, server }) => {
 
   return (
     <div className="post-container">
-      {isRecording ? (
-        <div onClick={stop} className="blob animation"></div>
-      ) : (
-        <div onClick={start} className="blob"></div>
-      )}
-
-      {blob && (
+      {blob ? (
         <>
           <audio
             style={{ width: "200px", height: "30px", margin: "10px" }}
@@ -63,6 +57,14 @@ const Post = ({ coords, trig, server }) => {
               Post
             </Button>
           </Button.Group>
+        </>
+      ) : (
+        <>
+          {isRecording ? (
+            <div onClick={stop} className="blob animation"></div>
+          ) : (
+            <div onClick={start} className="blob"></div>
+          )}
         </>
       )}
     </div>
