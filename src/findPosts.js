@@ -38,6 +38,7 @@ const FindPosts = ({ server, userdata, setuserdata }) => {
   const [results, setResults] = useState(false);
   const [viewport, setViewport] = useState(null);
   const [triggerRender, setTriggerRender] = useState(true);
+  const [zoomLevel, setZoomLevel] = useState(null);
 
   // temp consts with known posts
 
@@ -86,10 +87,11 @@ const FindPosts = ({ server, userdata, setuserdata }) => {
           <div className="mapwrapper">
             {results && (
               <Map
+                onViewportChanged={(e) => setZoomLevel(e.zoom)}
                 maxZoom={19}
                 className="markercluster-map"
                 viewport={viewport}
-                zoomControl={true}
+                zoomControl
               >
                 <TileLayer
                   attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -106,9 +108,10 @@ const FindPosts = ({ server, userdata, setuserdata }) => {
                   coords={[latitude, longitude]}
                 />
                 <Marker position={[latitude, longitude]} icon={green}></Marker>
-                <MarkerClusterGroup>
+                <MarkerClusterGroup spiderfyDistanceMultiplier={2.5}>
                   {results.map((ev, ind) => (
                     <AudChatRetrieve
+                      zoomlevel={zoomLevel}
                       setviewport={setViewport}
                       userdata={userdata}
                       server={server}
