@@ -39,6 +39,7 @@ const FindPosts = ({ server, userdata, setuserdata }) => {
   const [viewport, setViewport] = useState(null);
   const [triggerRender, setTriggerRender] = useState(true);
   const [zoomLevel, setZoomLevel] = useState(null);
+  const [dashClose, setDashClose] = useState(false);
 
   // temp consts with known posts
 
@@ -80,13 +81,18 @@ const FindPosts = ({ server, userdata, setuserdata }) => {
     }
   }, [latitude, longitude, viewport, triggerRender, server, cookies]);
 
+  const mapClickHandler = (e) => {
+    e.currentTarget && setDashClose(true);
+  };
+
   return (
     <>
       {latitude && longitude && viewport ? (
         <>
-          <div className="mapwrapper">
+          <div onClick={mapClickHandler} className="mapwrapper">
             {results && (
               <Map
+                bounceAtZoomLimits={false}
                 onViewportChanged={(e) => setZoomLevel(e.zoom)}
                 maxZoom={19}
                 className="markercluster-map"
@@ -101,6 +107,8 @@ const FindPosts = ({ server, userdata, setuserdata }) => {
                   setuserdata={setuserdata}
                   userdata={userdata}
                   server={server}
+                  dashClose={dashClose}
+                  setDashClose={setDashClose}
                 />
                 <Post
                   server={server}

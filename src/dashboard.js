@@ -1,19 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./dashboard.css";
 import "semantic-ui-css/semantic.min.css";
 import { Icon, Menu, Image } from "semantic-ui-react";
 import ProfileEdit from "./profileedit";
 import { Collapse } from "react-collapse";
 
-const Dashboard = ({ server, userdata, setuserdata }) => {
+const Dashboard = ({
+  server,
+  userdata,
+  setuserdata,
+  dashClose,
+  setDashClose,
+}) => {
   const handleItemClick = (e, { name }) => {
     activeItem !== name ? setActiveItem(name) : setActiveItem("");
   };
 
   const [activeItem, setActiveItem] = useState("");
 
+  useEffect(() => {
+    if (dashClose) {
+      setActiveItem("");
+      setDashClose(false);
+    }
+  }, [dashClose, setDashClose]);
+
   return (
-    <div className="dashboard-container">
+    <div onClick={(e) => e.stopPropagation()} className="dashboard-container">
       <div className="upper">
         <span style={{ marginLeft: "15px" }}>
           <Image src={userdata.pic} avatar />
