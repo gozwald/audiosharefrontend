@@ -80,6 +80,17 @@ body {
   overflow-x: hidden;
 }
 
+.feedContainer {
+  padding: 10px;
+  max-height: 50vh;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.profEditContainer {
+  padding: 10px;
+}
+
 /* .repyContainer {
   overflow: auto;
   overflow-x: hidden;

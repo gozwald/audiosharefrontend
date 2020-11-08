@@ -42,83 +42,85 @@ const ProfileEdit = ({ server, userdata, setuserdata }) => {
   };
 
   return (
-    <Form success={success} size={"tiny"} onSubmit={post}>
-      <div className="centerCenter">
-        <Image
-          style={{ margin: "10px" }}
-          src={
-            file
-              ? URL.createObjectURL(file)
-              : userdata.pic
-              ? userdata.pic
-              : "https://react.semantic-ui.com/images/wireframe/image.png"
-          }
-          size="tiny"
-        />
-        <Button
-          as="label"
-          htmlFor="file"
-          type="button"
-          size="tiny"
-          compact
-          color="green"
-          style={{ margin: "10px" }}
-          content="Choose Profile Photo"
-          labelPosition="left"
-          icon="file"
-        />
-        <input
-          type="file"
-          id="file"
-          hidden
-          onChange={(e) => setFile(e.target.files[0])}
-        />
-      </div>
-      <Form.Group widths={"equal"}>
-        <Form.Input
-          fluid
-          name="first"
-          label="First name"
-          placeholder={userdata.first}
-        />
-        <Form.Input
-          fluid
-          name="last"
-          label="Last name"
-          placeholder={userdata.last}
-        />
-        {/* <Form.Input
+    <div className="profEditContainer">
+      <Form success={success} size={"tiny"} onSubmit={post}>
+        <div className="centerCenter">
+          <Image
+            style={{ margin: "10px" }}
+            src={
+              file
+                ? URL.createObjectURL(file)
+                : userdata.pic
+                ? userdata.pic
+                : "https://react.semantic-ui.com/images/wireframe/image.png"
+            }
+            size="tiny"
+          />
+          <Button
+            as="label"
+            htmlFor="file"
+            type="button"
+            size="tiny"
+            compact
+            color="green"
+            style={{ margin: "10px" }}
+            content="Choose Profile Photo"
+            labelPosition="left"
+            icon="file"
+          />
+          <input
+            type="file"
+            id="file"
+            hidden
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+        </div>
+        <Form.Group widths={"equal"}>
+          <Form.Input
+            fluid
+            name="first"
+            label="First name"
+            placeholder={userdata.first}
+          />
+          <Form.Input
+            fluid
+            name="last"
+            label="Last name"
+            placeholder={userdata.last}
+          />
+          {/* <Form.Input
             fluid
             id="form-subcomponent-shorthand-input-email"
             label="email"
             placeholder="email"
           /> */}
-        <Form.TextArea
-          name="bio"
-          label="bio"
-          placeholder={
-            userdata.bio
-              ? userdata.bio
-              : "Put something awesome about you here!"
-          }
-        />
-      </Form.Group>
-      <div className="centerCenter">
-        <Button.Group>
-          <Button loading={loading} type="submit" positive>
-            Update
-          </Button>
-        </Button.Group>
-      </div>
-      <Message
-        style={{ marginTop: "10px" }}
-        success
-        size="small"
-        attached="bottom"
-      >
-        Profile Updated!
-      </Message>
-    </Form>
+          <Form.TextArea
+            name="bio"
+            label="bio"
+            placeholder={
+              userdata.bio
+                ? userdata.bio
+                : "Put something awesome about you here!"
+            }
+          />
+        </Form.Group>
+        <div className="centerCenter">
+          <Button.Group>
+            <Button loading={loading} type="submit" positive>
+              Update
+            </Button>
+          </Button.Group>
+        </div>
+        <Message
+          style={{ marginTop: "10px" }}
+          success
+          size="small"
+          attached="bottom"
+        >
+          Profile Updated!
+        </Message>
+      </Form>
+    </div>
   );
 };
 
