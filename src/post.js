@@ -7,11 +7,10 @@ import { Button } from "semantic-ui-react";
 const Post = ({ coords, trig, server }) => {
   const [blob, setBlob] = useState(null);
   const { isRecording, stop, start } = useVoiceRecorder((data) => {
-    setBlob(data);
+    setBlob({ raw: data, url: URL.createObjectURL(data) });
   });
 
-  const postPost = (result) => {
-    console.log(result);
+  const postPost = () => {
     setBlob(null);
     trig();
   };
@@ -25,7 +24,7 @@ const Post = ({ coords, trig, server }) => {
     const cookies = new Cookies();
 
     const formdata = new FormData();
-    formdata.append("audio", blob);
+    formdata.append("audio", blob.raw);
     formdata.append("location", location);
     formdata.append("token", cookies.get("token"));
 
@@ -45,7 +44,7 @@ const Post = ({ coords, trig, server }) => {
         <>
           <audio
             style={{ width: "200px", height: "30px", margin: "10px" }}
-            src={URL.createObjectURL(blob)}
+            src={blob.url}
             controls
             preload={"metadata"}
           />
