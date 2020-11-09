@@ -109,6 +109,8 @@ const FindPosts = ({ server, userdata, setuserdata }) => {
                   server={server}
                   dashClose={dashClose}
                   setDashClose={setDashClose}
+                  setviewport={setViewport}
+                  zoomlevel={zoomLevel}
                 />
                 <Post
                   server={server}
