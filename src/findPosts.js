@@ -118,7 +118,7 @@ const FindPosts = ({ server, userdata, setuserdata }) => {
                   coords={[latitude, longitude]}
                 />
                 <Marker position={[latitude, longitude]} icon={green}></Marker>
-                <MarkerClusterGroup spiderfyDistanceMultiplier={2.5}>
+                <MarkerClusterGroup spiderfyDistanceMultiplier={2.0}>
                   {results.map((ev, ind) => (
                     <AudChatRetrieve
                       zoomlevel={zoomLevel}
