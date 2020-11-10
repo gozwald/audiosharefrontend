@@ -26,13 +26,14 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const PostModule = ({
-  ev,
   server,
   userdata,
   setviewport,
   zoomlevel,
   open,
   setOpen,
+  closingcoords,
+  postid,
 }) => {
   const [postData, setPostData] = useState();
 
@@ -85,11 +86,12 @@ const PostModule = ({
 
   const modalHandler = () => {
     setOpen(false);
-    setviewport({
-      center: ev.location.coordinates,
-      zoom: zoomlevel,
-    });
-    socket.off(ev._id);
+    closingcoords &&
+      setviewport({
+        center: closingcoords,
+        zoom: zoomlevel,
+      });
+    socket.off(postid);
   };
 
   return (
@@ -97,8 +99,8 @@ const PostModule = ({
       <TransitionablePortal
         open={open}
         onOpen={() => {
-          getChats(ev._id);
-          socket.on(ev._id, (e) => {
+          getChats(postid);
+          socket.on(postid, (e) => {
             setPostData(e);
           });
         }}

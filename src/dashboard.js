@@ -15,7 +15,7 @@ const Dashboard = ({
   dashClose,
   setDashClose,
   setviewport,
-  zoomlevel
+  zoomlevel,
 }) => {
   const handleItemClick = (e, { name }) => {
     activeItem !== name ? setActiveItem(name) : setActiveItem("");
@@ -94,11 +94,16 @@ const Dashboard = ({
           server={server}
           userdata={userdata}
           setuserdata={setuserdata}
-          
         />
       </Collapse>
       <Collapse name="bell" isOpened={activeItem === "bell"}>
-        <Notification setviewport={setviewport} feedData={feedData} zoomlevel={zoomlevel} />
+        <Notification
+          server={server}
+          setviewport={setviewport}
+          userdata={userdata}
+          feedData={feedData}
+          zoomlevel={zoomlevel}
+        />
       </Collapse>
     </div>
   );

@@ -54,7 +54,8 @@ const AudChatRetrieve = ({ ev, server, userdata, setviewport, zoomlevel }) => {
           setviewport={setviewport}
           userdata={userdata}
           server={server}
-          ev={ev}
+          postid={ev._id}
+          closingcoords={ev.location.coordinates}
           open={open}
           setOpen={setOpen}
         />
