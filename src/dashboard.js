@@ -33,7 +33,7 @@ const Dashboard = ({
 
   useEffect(() => {
     socket.on(userdata._id, (e) => {
-      setFeedData((array) => [e, ...array]);
+      setFeedData(e);
     });
     const cookies = new Cookies();
     const myHeaders = new Headers();

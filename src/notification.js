@@ -42,9 +42,11 @@ const Notification = ({
                     ? "commented on your post"
                     : e.type === "reply"
                     ? "replied to a post you're following"
+                    : e.type === "react"
+                    ? "liked your post"
                     : ""}
                 </Feed.Summary>
-                <Feed.Extra text>{e.item.message}</Feed.Extra>
+                <Feed.Extra text>{e.item.message && e.item.message}</Feed.Extra>
               </Feed.Content>
             </Feed.Event>
           </>
