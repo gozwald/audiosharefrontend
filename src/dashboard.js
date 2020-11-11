@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./dashboard.css";
 import "semantic-ui-css/semantic.min.css";
-import { Icon, Menu, Image, Label } from "semantic-ui-react";
+import { Icon, Menu, Image, Label, Feed } from "semantic-ui-react";
 import ProfileEdit from "./profileedit";
 import Notification from "./notification";
 import { Collapse } from "react-collapse";
@@ -97,13 +97,20 @@ const Dashboard = ({
         />
       </Collapse>
       <Collapse name="bell" isOpened={activeItem === "bell"}>
-        <Notification
-          server={server}
-          setviewport={setviewport}
-          userdata={userdata}
-          feedData={feedData}
-          zoomlevel={zoomlevel}
-        />
+        <div className="feedContainer">
+          <Feed size="small">
+            {feedData.map((e, ind) => (
+              <Notification
+                server={server}
+                setviewport={setviewport}
+                userdata={userdata}
+                feeditem={e}
+                zoomlevel={zoomlevel}
+                key={ind}
+              />
+            ))}
+          </Feed>
+        </div>
       </Collapse>
     </div>
   );
