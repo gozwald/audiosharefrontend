@@ -78,7 +78,6 @@ const PostModule = ({
     fetch(`${server}/getchats/`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
         setPostData(result);
       })
       .catch((error) => console.log("error", error));

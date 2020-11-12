@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./dashboard.css";
 import "semantic-ui-css/semantic.min.css";
 import { Icon, Menu, Image, Label, Feed } from "semantic-ui-react";
@@ -24,6 +24,39 @@ const Dashboard = ({
   const [activeItem, setActiveItem] = useState("");
   const [feedData, setFeedData] = useState([]);
 
+  const fetchData = useCallback(
+    (options) => {
+      const cookies = new Cookies();
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      const raw = JSON.stringify({
+        token: cookies.get("token"),
+        options,
+      });
+
+      const requestOptions = {
+        method: "PUT",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+      fetch(`${server}/getfeed/`, requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          setFeedData(result);
+        })
+        .catch((error) => console.log("error", error));
+    },
+    [server]
+  );
+
+  useEffect(() => {
+    if (activeItem === "bell") {
+      fetchData("read");
+    }
+  }, [activeItem, server, fetchData]);
+
   useEffect(() => {
     if (dashClose) {
       setActiveItem("");
@@ -32,30 +65,11 @@ const Dashboard = ({
   }, [dashClose, setDashClose]);
 
   useEffect(() => {
+    fetchData("view");
     socket.on(userdata._id, (e) => {
       setFeedData(e);
     });
-    const cookies = new Cookies();
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    const raw = JSON.stringify({
-      token: cookies.get("token"),
-    });
-
-    const requestOptions = {
-      method: "PUT",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
-    fetch(`${server}/getfeed/`, requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        setFeedData(result);
-      })
-      .catch((error) => console.log("error", error));
-  }, [userdata._id, server]);
+  }, [userdata._id, fetchData]);
 
   return (
     <div onClick={(e) => e.stopPropagation()} className="dashboard-container">
@@ -72,9 +86,9 @@ const Dashboard = ({
           >
             <Menu.Item>
               <Icon color={"green"} name="bell" />
-              {feedData.length && (
+              {feedData.filter((e) => e.read === false).length > 0 && (
                 <Label size={"tiny"} circular color="orange" floating>
-                  {feedData.length}
+                  {feedData.filter((e) => e.read === false).length}
                 </Label>
               )}
             </Menu.Item>
